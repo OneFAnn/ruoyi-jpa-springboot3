@@ -1,3 +1,4 @@
+
 # 项目相关配置
 ruoyi:
   # 名称
@@ -49,6 +50,8 @@ user:
 
 # Spring配置
 spring:
+  application:
+    name: 若依springboot3
   # 资源信息
   messages:
     # 国际化资源文件路径
@@ -115,12 +118,18 @@ pagehelper:
   params: count=countSql
 
 # Swagger配置
-swagger:
-  # 是否开启swagger
-  enabled: true
-  # 请求前缀
-  pathMapping: /dev-api
+#swagger:
+#  # 是否开启swagger
+#  enabled: true
+#  # 请求前缀
+#  pathMapping: /dev-api
 
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    disable-swagger-default-url: true
+    configUrl: /v3/api-docs/swagger-config
 # 防止XSS攻击
 xss:
   # 过滤开关
