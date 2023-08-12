@@ -2,6 +2,10 @@ package com.ruoyi.common.core.page;
 
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.ServletUtils;
+import jakarta.persistence.OrderBy;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.util.StringUtils;
 
 /**
  * 表格数据处理
@@ -47,6 +51,20 @@ public class TableSupport
         pageDomain.setIsAsc(ServletUtils.getParameter(IS_ASC));
         pageDomain.setReasonable(ServletUtils.getParameterToBool(REASONABLE));
         return pageDomain;
+    }
+
+    public static PageRequest pageRequest(){
+        PageDomain pageDomain = getPageDomain();
+        if (pageDomain.getJpaOrderBy().isPresent()){
+            return PageRequest.of(pageDomain.getPageNum()
+                    , pageDomain.getPageSize()
+                    , pageDomain.getJpaOrderBy().get());
+
+        }else {
+            return PageRequest.of(pageDomain.getPageNum()
+                    , pageDomain.getPageSize());
+        }
+
     }
 
     public static PageDomain buildPageRequest()

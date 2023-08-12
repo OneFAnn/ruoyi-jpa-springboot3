@@ -1,5 +1,9 @@
 package com.ruoyi.system.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -7,18 +11,23 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * 参数配置表 sys_config
  * 
  * @author ruoyi
  */
+@Entity
+@DynamicUpdate
 public class SysConfig extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 参数主键 */
     @Excel(name = "参数主键", cellType = ColumnType.NUMERIC)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long configId;
 
     /** 参数名称 */

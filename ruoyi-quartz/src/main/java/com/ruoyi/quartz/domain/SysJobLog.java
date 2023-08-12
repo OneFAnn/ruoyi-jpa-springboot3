@@ -1,6 +1,10 @@
 package com.ruoyi.quartz.domain;
 
 import java.util.Date;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -17,6 +21,8 @@ public class SysJobLog extends BaseEntity
 
     /** ID */
     @Excel(name = "日志序号")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long jobLogId;
 
     /** 任务名称 */

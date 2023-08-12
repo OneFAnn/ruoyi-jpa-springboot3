@@ -1,9 +1,36 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.Collection;
-import java.util.List;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.util.*;
+import java.util.function.Supplier;
+
+import com.blazebit.persistence.CriteriaBuilderFactory;
+import com.blazebit.persistence.OrderByBuilder;
+import com.blazebit.persistence.PagedList;
+import com.blazebit.persistence.SelectBuilder;
+import com.blazebit.persistence.querydsl.BlazeJPAQuery;
+import com.blazebit.persistence.querydsl.BlazeJPAQueryFactory;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ruoyi.common.core.page.PageDomain;
+import com.ruoyi.common.core.page.TableSupport;
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.SelectBooleanBuilder;
+import com.ruoyi.system.domain.QSysConfig;
+import com.ruoyi.system.repository.SysConfigRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.annotation.DataSource;
 import com.ruoyi.common.constant.CacheConstants;
@@ -25,11 +52,20 @@ import com.ruoyi.system.service.ISysConfigService;
 @Service
 public class SysConfigServiceImpl implements ISysConfigService
 {
-    @Autowired
-    private SysConfigMapper configMapper;
+
 
     @Autowired
     private RedisCache redisCache;
+
+    @Autowired
+    private SysConfigRepository sysConfigRepository;
+
+
+
+    @Autowired
+    private BlazeJPAQueryFactory blazeJPAQueryFactory;
+
+     final QSysConfig sysConfig = QSysConfig.sysConfig;
 
     /**
      * 项目启动时，初始化参数到缓存
@@ -50,9 +86,8 @@ public class SysConfigServiceImpl implements ISysConfigService
     @DataSource(DataSourceType.MASTER)
     public SysConfig selectConfigById(Long configId)
     {
-        SysConfig config = new SysConfig();
-        config.setConfigId(configId);
-        return configMapper.selectConfig(config);
+        SysConfig config = blazeJPAQueryFactory.selectFrom(sysConfig).where(sysConfig.configId.eq(configId)).fetchOne();
+        return config;
     }
 
     /**
@@ -69,9 +104,7 @@ public class SysConfigServiceImpl implements ISysConfigService
         {
             return configValue;
         }
-        SysConfig config = new SysConfig();
-        config.setConfigKey(configKey);
-        SysConfig retConfig = configMapper.selectConfig(config);
+        SysConfig retConfig = blazeJPAQueryFactory.selectFrom(sysConfig).where(sysConfig.configKey.eq(configKey)).fetchOne();
         if (StringUtils.isNotNull(retConfig))
         {
             redisCache.setCacheObject(getCacheKey(configKey), retConfig.getConfigValue());
@@ -96,16 +129,36 @@ public class SysConfigServiceImpl implements ISysConfigService
         return Convert.toBool(captchaEnabled);
     }
 
+
+    @Autowired
+    private CriteriaBuilderFactory criteriaBuilderFactory;
+
     /**
      * 查询参数配置列表
      * 
      * @param config 参数配置信息
      * @return 参数配置集合
      */
+
     @Override
-    public List<SysConfig> selectConfigList(SysConfig config)
+    public List<SysConfig> selectConfigList(SysConfig config, PageDomain pageDomain)
     {
-        return configMapper.selectConfigList(config);
+        BlazeJPAQuery<SysConfig> sysConfigJPAQuery = blazeJPAQueryFactory.selectFrom(sysConfig);
+        sysConfigJPAQuery.where(SelectBooleanBuilder.builder()
+                .notBlankLike(config.getConfigKey(), sysConfig.configKey)
+                .notBlankLike(config.getConfigName(), sysConfig.configName)
+                .notBlankEq(config.getConfigType(), sysConfig.configType)
+                .notBlankDateAfter((String)config.getParams().get("beginTime"), sysConfig.createTime)
+                .notBlankDateBefter((String)config.getParams().get("endTime"), sysConfig.createTime, localDate -> LocalTime.of(23, 59, 59))
+                .build());
+        Optional<List<SysConfig>> result = Optional.ofNullable(pageDomain).map(page->{
+            Optional<OrderSpecifier> dslOrderBy = pageDomain.getDslOrderBy();
+            dslOrderBy.map(orderSpecifier -> sysConfigJPAQuery.orderBy(orderSpecifier))
+                    .orElse(sysConfigJPAQuery.orderBy(sysConfig.configId.desc()));
+            return sysConfigJPAQuery.fetchPage(pageDomain.offset(), pageDomain.getPageSize());
+        });
+        return result.orElseGet(sysConfigJPAQuery::fetch);
+
     }
 
     /**
@@ -117,12 +170,13 @@ public class SysConfigServiceImpl implements ISysConfigService
     @Override
     public int insertConfig(SysConfig config)
     {
-        int row = configMapper.insertConfig(config);
-        if (row > 0)
+//        int row = configMapper.insertConfig(config);
+        config = sysConfigRepository.save(config);
+        if (config.getConfigId() != null)
         {
             redisCache.setCacheObject(getCacheKey(config.getConfigKey()), config.getConfigValue());
         }
-        return row;
+        return 1;
     }
 
     /**
@@ -134,18 +188,17 @@ public class SysConfigServiceImpl implements ISysConfigService
     @Override
     public int updateConfig(SysConfig config)
     {
-        SysConfig temp = configMapper.selectConfigById(config.getConfigId());
+//        SysConfig temp = configMapper.selectConfigById(config.getConfigId());
+        SysConfig temp = sysConfigRepository.findById(config.getConfigId()).get();
         if (!StringUtils.equals(temp.getConfigKey(), config.getConfigKey()))
         {
             redisCache.deleteObject(getCacheKey(temp.getConfigKey()));
         }
+//        int row = configMapper.updateConfig(config);
+        sysConfigRepository.save(config);
+        redisCache.setCacheObject(getCacheKey(config.getConfigKey()), config.getConfigValue());
 
-        int row = configMapper.updateConfig(config);
-        if (row > 0)
-        {
-            redisCache.setCacheObject(getCacheKey(config.getConfigKey()), config.getConfigValue());
-        }
-        return row;
+        return 1;
     }
 
     /**
@@ -158,13 +211,22 @@ public class SysConfigServiceImpl implements ISysConfigService
     {
         for (Long configId : configIds)
         {
-            SysConfig config = selectConfigById(configId);
-            if (StringUtils.equals(UserConstants.YES, config.getConfigType()))
-            {
-                throw new ServiceException(String.format("内置参数【%1$s】不能删除 ", config.getConfigKey()));
-            }
-            configMapper.deleteConfigById(configId);
-            redisCache.deleteObject(getCacheKey(config.getConfigKey()));
+//            SysConfig config = selectConfigById(configId);
+            sysConfigRepository.findById(configId).ifPresent(c->{
+                if (StringUtils.equals(UserConstants.YES, c.getConfigType())){
+                    throw new ServiceException(String.format("内置参数【%1$s】不能删除 ", c.getConfigKey()));
+                }
+                sysConfigRepository.deleteById(configId);
+                redisCache.deleteObject(getCacheKey(c.getConfigKey()));
+            });
+
+//            if (StringUtils.equals(UserConstants.YES, config.getConfigType()))
+//            {
+//                throw new ServiceException(String.format("内置参数【%1$s】不能删除 ", config.getConfigKey()));
+//            }
+//            configMapper.deleteConfigById(configId);
+
+
         }
     }
 
@@ -174,7 +236,8 @@ public class SysConfigServiceImpl implements ISysConfigService
     @Override
     public void loadingConfigCache()
     {
-        List<SysConfig> configsList = configMapper.selectConfigList(new SysConfig());
+//        List<SysConfig> configsList = configMapper.selectConfigList(new SysConfig());
+        List<SysConfig> configsList = sysConfigRepository.findAll();
         for (SysConfig config : configsList)
         {
             redisCache.setCacheObject(getCacheKey(config.getConfigKey()), config.getConfigValue());
@@ -211,7 +274,8 @@ public class SysConfigServiceImpl implements ISysConfigService
     public boolean checkConfigKeyUnique(SysConfig config)
     {
         Long configId = StringUtils.isNull(config.getConfigId()) ? -1L : config.getConfigId();
-        SysConfig info = configMapper.checkConfigKeyUnique(config.getConfigKey());
+//        SysConfig info = configMapper.checkConfigKeyUnique(config.getConfigKey());
+        SysConfig info = blazeJPAQueryFactory.selectFrom(sysConfig).where(sysConfig.configKey.eq(config.getConfigKey())).fetchOne();
         if (StringUtils.isNotNull(info) && info.getConfigId().longValue() != configId.longValue())
         {
             return UserConstants.NOT_UNIQUE;

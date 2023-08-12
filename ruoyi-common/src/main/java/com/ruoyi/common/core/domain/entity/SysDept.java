@@ -3,6 +3,9 @@ package com.ruoyi.common.core.domain.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
 
 import jakarta.validation.constraints.NotBlank;
@@ -20,6 +23,8 @@ public class SysDept extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 部门ID */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long deptId;
 
     /** 父部门ID */

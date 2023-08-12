@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 /**
  * 操作日志记录表 oper_log
@@ -16,6 +19,8 @@ public class SysOperLog extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 日志主键 */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Excel(name = "操作序号", cellType = ColumnType.NUMERIC)
     private Long operId;
 

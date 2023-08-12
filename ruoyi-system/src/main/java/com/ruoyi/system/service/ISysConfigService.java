@@ -1,7 +1,10 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.system.domain.SysConfig;
+import org.springframework.data.domain.PageRequest;
 
 /**
  * 参数配置 服务层
@@ -39,7 +42,7 @@ public interface ISysConfigService
      * @param config 参数配置信息
      * @return 参数配置集合
      */
-    public List<SysConfig> selectConfigList(SysConfig config);
+    public List<SysConfig> selectConfigList(SysConfig config, PageDomain pageDomain);
 
     /**
      * 新增参数配置

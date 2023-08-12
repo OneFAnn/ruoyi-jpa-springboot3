@@ -1,5 +1,9 @@
 package com.ruoyi.system.domain;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 /**
  * 当前在线会话
  * 
@@ -8,6 +12,8 @@ package com.ruoyi.system.domain;
 public class SysUserOnline
 {
     /** 会话编号 */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String tokenId;
 
     /** 部门名称 */

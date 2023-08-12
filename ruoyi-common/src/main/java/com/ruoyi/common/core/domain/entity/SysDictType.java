@@ -1,5 +1,8 @@
 package com.ruoyi.common.core.domain.entity;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -19,6 +22,8 @@ public class SysDictType extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 字典主键 */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Excel(name = "字典主键", cellType = ColumnType.NUMERIC)
     private Long dictId;
 

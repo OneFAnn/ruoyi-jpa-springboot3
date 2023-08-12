@@ -1,6 +1,10 @@
 package com.ruoyi.quartz.domain;
 
 import java.util.Date;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -24,6 +28,8 @@ public class SysJob extends BaseEntity
 
     /** 任务ID */
     @Excel(name = "任务序号", cellType = ColumnType.NUMERIC)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long jobId;
 
     /** 任务名称 */

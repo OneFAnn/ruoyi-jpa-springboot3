@@ -39,6 +39,8 @@ logging:
   level:
     com.ruoyi: debug
     org.springframework: warn
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
 
 # 用户配置
 user:

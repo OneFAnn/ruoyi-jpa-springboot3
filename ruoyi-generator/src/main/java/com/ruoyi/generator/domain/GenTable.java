@@ -1,6 +1,10 @@
 package com.ruoyi.generator.domain;
 
 import java.util.List;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.apache.commons.lang3.ArrayUtils;
@@ -18,6 +22,8 @@ public class GenTable extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 编号 */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long tableId;
 
     /** 表名称 */

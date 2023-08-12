@@ -7,18 +7,23 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.Entity;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 
 /**
  * Entity基类
  * 
  * @author ruoyi
  */
+@MappedSuperclass
 public class BaseEntity implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
     /** 搜索值 */
     @JsonIgnore
+    @Transient
     private String searchValue;
 
     /** 创建者 */
@@ -40,6 +45,7 @@ public class BaseEntity implements Serializable
 
     /** 请求参数 */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Transient
     private Map<String, Object> params;
 
     public String getSearchValue()

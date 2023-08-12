@@ -1,5 +1,12 @@
 # 数据源配置
 spring:
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: false
+        properties:
+            hibernate:
+                format_sql: false
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.cj.jdbc.Driver
@@ -56,6 +63,8 @@ spring:
                     log-slow-sql: true
                     slow-sql-millis: 1000
                     merge-sql: true
+                    db-type: mysql
                 wall:
+                    db-type: mysql
                     config:
                         multi-statement-allow: true

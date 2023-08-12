@@ -1,6 +1,13 @@
 package com.ruoyi.common.core.page;
 
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
 import com.ruoyi.common.utils.StringUtils;
+import org.springframework.data.domain.Sort;
+
+import java.util.Optional;
 
 /**
  * 分页数据
@@ -31,6 +38,40 @@ public class PageDomain
             return "";
         }
         return StringUtils.toUnderScoreCase(orderByColumn) + " " + isAsc;
+    }
+
+    public int offset(){
+        return (this.pageNum-1)/this.pageSize;
+    }
+
+    public Optional<Sort> getJpaOrderBy()
+    {
+        if (StringUtils.isEmpty(orderByColumn))
+        {
+            return Optional.empty();
+        }
+        Sort sort = Sort.by(orderByColumn);
+        if(isAsc.equals("asc")){
+            sort.ascending();
+        }else{
+            sort.descending();
+        }
+        return Optional.of(sort);
+    }
+
+    public Optional<OrderSpecifier> getDslOrderBy(){
+        if (StringUtils.isEmpty(orderByColumn))
+        {
+            return Optional.empty();
+        }
+        StringPath stringPath = Expressions.stringPath(orderByColumn);
+        OrderSpecifier orderSpecifier = null;
+        if (isAsc.equals("desc")){
+            orderSpecifier = stringPath.desc();
+        }else{
+            orderSpecifier = stringPath.asc();
+        }
+        return Optional.of(orderSpecifier);
     }
 
     public Integer getPageNum()

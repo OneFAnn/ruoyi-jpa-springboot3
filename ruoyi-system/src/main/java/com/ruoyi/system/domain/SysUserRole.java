@@ -1,5 +1,8 @@
 package com.ruoyi.system.domain;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,6 +14,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class SysUserRole
 {
     /** 用户ID */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
     
     /** 角色ID */
