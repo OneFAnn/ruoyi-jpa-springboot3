@@ -1,4 +1,4 @@
- **若依升级到springboot3，mybatis替换为spring data jpa + querydsl
+** 若依升级到springboot3，mybatis替换为spring data jpa + querydsl
 ** 
 ## 平台简介
 
