@@ -1,6 +1,8 @@
 package com.ruoyi.quartz.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.PageDomain;
 import org.quartz.SchedulerException;
 import com.ruoyi.common.exception.job.TaskException;
 import com.ruoyi.quartz.domain.SysJob;
@@ -18,7 +20,7 @@ public interface ISysJobService
      * @param job 调度信息
      * @return 调度任务集合
      */
-    public List<SysJob> selectJobList(SysJob job);
+    public List<SysJob> selectJobList(SysJob job, PageDomain pageDomain);
 
     /**
      * 通过调度任务ID查询调度信息

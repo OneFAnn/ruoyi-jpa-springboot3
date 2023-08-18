@@ -2,9 +2,7 @@ package com.ruoyi.common.core.domain.entity;
 
 import java.util.Set;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -13,12 +11,17 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * 角色表 sys_role
  * 
  * @author ruoyi
  */
+@Entity
+@DynamicUpdate
+@DynamicInsert
 public class SysRole extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -59,15 +62,19 @@ public class SysRole extends BaseEntity
     private String delFlag;
 
     /** 用户是否存在此角色标识 默认不存在 */
+    @Transient
     private boolean flag = false;
 
     /** 菜单组 */
+    @Transient
     private Long[] menuIds;
 
     /** 部门组（数据权限） */
+    @Transient
     private Long[] deptIds;
 
     /** 角色菜单权限 */
+    @Transient
     private Set<String> permissions;
 
     public SysRole()

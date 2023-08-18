@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.TableSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -39,8 +41,7 @@ public class SysNoticeController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysNotice notice)
     {
-        startPage();
-        List<SysNotice> list = noticeService.selectNoticeList(notice);
+        List<SysNotice> list = noticeService.selectNoticeList(notice, TableSupport.getPageDomain());
         return getDataTable(list);
     }
 

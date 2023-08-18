@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.system;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.ruoyi.common.core.page.TableSupport;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,8 +46,7 @@ public class SysDictDataController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysDictData dictData)
     {
-        startPage();
-        List<SysDictData> list = dictDataService.selectDictDataList(dictData);
+        List<SysDictData> list = dictDataService.selectDictDataList(dictData, TableSupport.getPageDomain());
         return getDataTable(list);
     }
 
@@ -54,7 +55,7 @@ public class SysDictDataController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysDictData dictData)
     {
-        List<SysDictData> list = dictDataService.selectDictDataList(dictData);
+        List<SysDictData> list = dictDataService.selectDictDataList(dictData,null);
         ExcelUtil<SysDictData> util = new ExcelUtil<SysDictData>(SysDictData.class);
         util.exportExcel(response, list, "字典数据");
     }

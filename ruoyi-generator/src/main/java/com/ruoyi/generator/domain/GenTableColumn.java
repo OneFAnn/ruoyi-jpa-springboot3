@@ -1,17 +1,23 @@
 package com.ruoyi.generator.domain;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.utils.StringUtils;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * 代码生成业务字段表 gen_table_column
  * 
  * @author ruoyi
  */
+@Entity
+@DynamicUpdate
+@DynamicInsert
 public class GenTableColumn extends BaseEntity
 {
     private static final long serialVersionUID = 1L;

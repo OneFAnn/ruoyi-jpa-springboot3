@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.TableSupport;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,8 +40,7 @@ public class SysDictTypeController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysDictType dictType)
     {
-        startPage();
-        List<SysDictType> list = dictTypeService.selectDictTypeList(dictType);
+        List<SysDictType> list = dictTypeService.selectDictTypeList(dictType, TableSupport.getPageDomain());
         return getDataTable(list);
     }
 
@@ -48,7 +49,7 @@ public class SysDictTypeController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysDictType dictType)
     {
-        List<SysDictType> list = dictTypeService.selectDictTypeList(dictType);
+        List<SysDictType> list = dictTypeService.selectDictTypeList(dictType,null);
         ExcelUtil<SysDictType> util = new ExcelUtil<SysDictType>(SysDictType.class);
         util.exportExcel(response, list, "字典类型");
     }

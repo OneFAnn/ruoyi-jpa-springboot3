@@ -3,10 +3,14 @@ package com.ruoyi.system.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.ruoyi.common.core.page.PageDomain;
+import com.ruoyi.system.repository.*;
 import jakarta.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -36,27 +40,26 @@ import com.ruoyi.system.service.ISysUserService;
  * @author ruoyi
  */
 @Service
+@Transactional
 public class SysUserServiceImpl implements ISysUserService
 {
     private static final Logger log = LoggerFactory.getLogger(SysUserServiceImpl.class);
 
-    @Autowired
-    private SysUserMapper userMapper;
-
-    @Autowired
-    private SysRoleMapper roleMapper;
-
-    @Autowired
-    private SysPostMapper postMapper;
-
-    @Autowired
-    private SysUserRoleMapper userRoleMapper;
-
-    @Autowired
-    private SysUserPostMapper userPostMapper;
 
     @Autowired
     private ISysConfigService configService;
+
+    @Autowired
+    private SysUserRepository userRepository;
+    @Autowired
+    private SysUserRoleRepository userRoleRepository;
+    @Autowired
+    private SysPostRepository postRepository;
+    @Autowired
+    private SysRoleRepository roleRepository;
+    @Autowired
+    private SysUserPostRepository userPostRepository;
+
 
     @Autowired
     protected Validator validator;
@@ -69,9 +72,9 @@ public class SysUserServiceImpl implements ISysUserService
      */
     @Override
     @DataScope(deptAlias = "d", userAlias = "u")
-    public List<SysUser> selectUserList(SysUser user)
+    public List<SysUser> selectUserList(SysUser user, PageDomain pageDomain)
     {
-        return userMapper.selectUserList(user);
+        return userRepository.selectUserList(user,pageDomain);
     }
 
     /**
@@ -82,9 +85,9 @@ public class SysUserServiceImpl implements ISysUserService
      */
     @Override
     @DataScope(deptAlias = "d", userAlias = "u")
-    public List<SysUser> selectAllocatedList(SysUser user)
+    public List<SysUser> selectAllocatedList(SysUser user,PageDomain pageDomain)
     {
-        return userMapper.selectAllocatedList(user);
+        return userRepository.selectAllocatedList(user,pageDomain);
     }
 
     /**
@@ -95,9 +98,9 @@ public class SysUserServiceImpl implements ISysUserService
      */
     @Override
     @DataScope(deptAlias = "d", userAlias = "u")
-    public List<SysUser> selectUnallocatedList(SysUser user)
+    public List<SysUser> selectUnallocatedList(SysUser user, PageDomain pageDomain)
     {
-        return userMapper.selectUnallocatedList(user);
+        return userRepository.selectUnallocatedList(user,pageDomain);
     }
 
     /**
@@ -109,7 +112,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public SysUser selectUserByUserName(String userName)
     {
-        return userMapper.selectUserByUserName(userName);
+        return userRepository.selectUserByUserName(userName);
     }
 
     /**
@@ -121,7 +124,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public SysUser selectUserById(Long userId)
     {
-        return userMapper.selectUserById(userId);
+        return userRepository.selectUserById(userId);
     }
 
     /**
@@ -133,7 +136,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public String selectUserRoleGroup(String userName)
     {
-        List<SysRole> list = roleMapper.selectRolesByUserName(userName);
+        List<SysRole> list = roleRepository.selectRolesByUserName(userName);
         if (CollectionUtils.isEmpty(list))
         {
             return StringUtils.EMPTY;
@@ -150,7 +153,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public String selectUserPostGroup(String userName)
     {
-        List<SysPost> list = postMapper.selectPostsByUserName(userName);
+        List<SysPost> list = postRepository.selectPostsByUserName(userName);
         if (CollectionUtils.isEmpty(list))
         {
             return StringUtils.EMPTY;
@@ -168,7 +171,7 @@ public class SysUserServiceImpl implements ISysUserService
     public boolean checkUserNameUnique(SysUser user)
     {
         Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
-        SysUser info = userMapper.checkUserNameUnique(user.getUserName());
+        SysUser info = userRepository.checkUserNameUnique(user.getUserName());
         if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue())
         {
             return UserConstants.NOT_UNIQUE;
@@ -186,7 +189,7 @@ public class SysUserServiceImpl implements ISysUserService
     public boolean checkPhoneUnique(SysUser user)
     {
         Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
-        SysUser info = userMapper.checkPhoneUnique(user.getPhonenumber());
+        SysUser info = userRepository.checkPhoneUnique(user.getPhonenumber());
         if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue())
         {
             return UserConstants.NOT_UNIQUE;
@@ -204,7 +207,7 @@ public class SysUserServiceImpl implements ISysUserService
     public boolean checkEmailUnique(SysUser user)
     {
         Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
-        SysUser info = userMapper.checkEmailUnique(user.getEmail());
+        SysUser info = userRepository.checkEmailUnique(user.getEmail());
         if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue())
         {
             return UserConstants.NOT_UNIQUE;
@@ -238,7 +241,7 @@ public class SysUserServiceImpl implements ISysUserService
         {
             SysUser user = new SysUser();
             user.setUserId(userId);
-            List<SysUser> users = SpringUtils.getAopProxy(this).selectUserList(user);
+            List<SysUser> users = SpringUtils.getAopProxy(this).selectUserList(user,null);
             if (StringUtils.isEmpty(users))
             {
                 throw new ServiceException("没有权限访问用户数据！");
@@ -257,12 +260,12 @@ public class SysUserServiceImpl implements ISysUserService
     public int insertUser(SysUser user)
     {
         // 新增用户信息
-        int rows = userMapper.insertUser(user);
+        userRepository.saveAndFlush(user);
         // 新增用户岗位关联
         insertUserPost(user);
         // 新增用户与角色管理
         insertUserRole(user);
-        return rows;
+        return 1;
     }
 
     /**
@@ -274,7 +277,8 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public boolean registerUser(SysUser user)
     {
-        return userMapper.insertUser(user) > 0;
+         userRepository.save(user) ;
+         return true;
     }
 
     /**
@@ -289,14 +293,15 @@ public class SysUserServiceImpl implements ISysUserService
     {
         Long userId = user.getUserId();
         // 删除用户与角色关联
-        userRoleMapper.deleteUserRoleByUserId(userId);
+        userRoleRepository.deleteUserRoleByUserId(userId);
         // 新增用户与角色管理
         insertUserRole(user);
         // 删除用户与岗位关联
-        userPostMapper.deleteUserPostByUserId(userId);
+        userPostRepository.deleteUserPostByUserId(userId);
         // 新增用户与岗位管理
         insertUserPost(user);
-        return userMapper.updateUser(user);
+        return userRepository.updateUser(user);
+
     }
 
     /**
@@ -309,7 +314,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Transactional
     public void insertUserAuth(Long userId, Long[] roleIds)
     {
-        userRoleMapper.deleteUserRoleByUserId(userId);
+        userRoleRepository.deleteUserRoleByUserId(userId);
         insertUserRole(userId, roleIds);
     }
 
@@ -322,7 +327,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public int updateUserStatus(SysUser user)
     {
-        return userMapper.updateUser(user);
+         return userRepository.updateUser(user);
     }
 
     /**
@@ -334,7 +339,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public int updateUserProfile(SysUser user)
     {
-        return userMapper.updateUser(user);
+         return userRepository.updateUser(user);
     }
 
     /**
@@ -347,7 +352,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public boolean updateUserAvatar(String userName, String avatar)
     {
-        return userMapper.updateUserAvatar(userName, avatar) > 0;
+        return userRepository.updateUserAvatar(userName, avatar) > 0;
     }
 
     /**
@@ -359,7 +364,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public int resetPwd(SysUser user)
     {
-        return userMapper.updateUser(user);
+        return  userRepository.updateUser(user);
     }
 
     /**
@@ -370,9 +375,9 @@ public class SysUserServiceImpl implements ISysUserService
      * @return 结果
      */
     @Override
-    public int resetUserPwd(String userName, String password)
+    public long resetUserPwd(String userName, String password)
     {
-        return userMapper.resetUserPwd(userName, password);
+        return userRepository.resetUserPwd(userName, password);
     }
 
     /**
@@ -404,7 +409,7 @@ public class SysUserServiceImpl implements ISysUserService
                 up.setPostId(postId);
                 list.add(up);
             }
-            userPostMapper.batchUserPost(list);
+            userPostRepository.saveAll(list);
         }
     }
 
@@ -427,7 +432,7 @@ public class SysUserServiceImpl implements ISysUserService
                 ur.setRoleId(roleId);
                 list.add(ur);
             }
-            userRoleMapper.batchUserRole(list);
+            userRoleRepository.saveAll(list);
         }
     }
 
@@ -439,13 +444,13 @@ public class SysUserServiceImpl implements ISysUserService
      */
     @Override
     @Transactional
-    public int deleteUserById(Long userId)
+    public long deleteUserById(Long userId)
     {
         // 删除用户与角色关联
-        userRoleMapper.deleteUserRoleByUserId(userId);
+        userRoleRepository.deleteUserRoleByUserId(userId);
         // 删除用户与岗位表
-        userPostMapper.deleteUserPostByUserId(userId);
-        return userMapper.deleteUserById(userId);
+        userPostRepository.deleteUserPostByUserId(userId);
+        return userRepository.deleteUserById(userId);
     }
 
     /**
@@ -456,7 +461,7 @@ public class SysUserServiceImpl implements ISysUserService
      */
     @Override
     @Transactional
-    public int deleteUserByIds(Long[] userIds)
+    public long deleteUserByIds(Long[] userIds)
     {
         for (Long userId : userIds)
         {
@@ -464,10 +469,10 @@ public class SysUserServiceImpl implements ISysUserService
             checkUserDataScope(userId);
         }
         // 删除用户与角色关联
-        userRoleMapper.deleteUserRole(userIds);
+        userRoleRepository.deleteUserRole(userIds);
         // 删除用户与岗位关联
-        userPostMapper.deleteUserPost(userIds);
-        return userMapper.deleteUserByIds(userIds);
+        userPostRepository.deleteUserPost(userIds);
+        return userRepository.deleteUserByIds(userIds);
     }
 
     /**
@@ -495,13 +500,13 @@ public class SysUserServiceImpl implements ISysUserService
             try
             {
                 // 验证是否存在这个用户
-                SysUser u = userMapper.selectUserByUserName(user.getUserName());
+                SysUser u = userRepository.selectUserByUserName(user.getUserName());
                 if (StringUtils.isNull(u))
                 {
                     BeanValidators.validateWithException(validator, user);
                     user.setPassword(SecurityUtils.encryptPassword(password));
                     user.setCreateBy(operName);
-                    userMapper.insertUser(user);
+                    userRepository.save(user);
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、账号 " + user.getUserName() + " 导入成功");
                 }
@@ -512,7 +517,7 @@ public class SysUserServiceImpl implements ISysUserService
                     checkUserDataScope(u.getUserId());
                     user.setUserId(u.getUserId());
                     user.setUpdateBy(operName);
-                    userMapper.updateUser(user);
+                    userRepository.updateUser(user);
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、账号 " + user.getUserName() + " 更新成功");
                 }

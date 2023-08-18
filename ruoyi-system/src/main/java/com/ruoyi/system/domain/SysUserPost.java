@@ -1,8 +1,7 @@
 package com.ruoyi.system.domain;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.ruoyi.system.domain.idclazz.SysUserPostId;
+import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,14 +10,16 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author ruoyi
  */
+@Entity
+@IdClass(SysUserPostId.class)
 public class SysUserPost
 {
     /** 用户ID */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
     
     /** 岗位ID */
+    @Id
     private Long postId;
 
     public Long getUserId()

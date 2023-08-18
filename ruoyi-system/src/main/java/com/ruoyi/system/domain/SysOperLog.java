@@ -5,15 +5,19 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.hibernate.Length;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * 操作日志记录表 oper_log
  * 
  * @author ruoyi
  */
+@Entity
+@DynamicUpdate
+@DynamicInsert
 public class SysOperLog extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -26,61 +30,76 @@ public class SysOperLog extends BaseEntity
 
     /** 操作模块 */
     @Excel(name = "操作模块")
+    @Column(length=50)
     private String title;
 
     /** 业务类型（0其它 1新增 2修改 3删除） */
     @Excel(name = "业务类型", readConverterExp = "0=其它,1=新增,2=修改,3=删除,4=授权,5=导出,6=导入,7=强退,8=生成代码,9=清空数据")
+    @Column(length=2)
     private Integer businessType;
 
     /** 业务类型数组 */
+    @Transient
     private Integer[] businessTypes;
 
     /** 请求方法 */
     @Excel(name = "请求方法")
+    @Column(length=100)
     private String method;
 
     /** 请求方式 */
     @Excel(name = "请求方式")
+    @Column(length=10)
     private String requestMethod;
 
     /** 操作类别（0其它 1后台用户 2手机端用户） */
     @Excel(name = "操作类别", readConverterExp = "0=其它,1=后台用户,2=手机端用户")
+    @Column(length=1)
     private Integer operatorType;
 
     /** 操作人员 */
     @Excel(name = "操作人员")
+    @Column(length=50)
     private String operName;
 
     /** 部门名称 */
     @Excel(name = "部门名称")
+    @Column(length=50)
     private String deptName;
 
     /** 请求url */
     @Excel(name = "请求地址")
+    @Column(length=255)
     private String operUrl;
 
     /** 操作地址 */
     @Excel(name = "操作地址")
+    @Column(length=128)
     private String operIp;
 
     /** 操作地点 */
     @Excel(name = "操作地点")
+    @Column(length=255)
     private String operLocation;
 
     /** 请求参数 */
     @Excel(name = "请求参数")
+    @Column(length=2000)
     private String operParam;
 
     /** 返回参数 */
     @Excel(name = "返回参数")
+    @Column(length=2000)
     private String jsonResult;
 
     /** 操作状态（0正常 1异常） */
     @Excel(name = "状态", readConverterExp = "0=正常,1=异常")
+    @Column(length=1)
     private Integer status;
 
     /** 错误消息 */
     @Excel(name = "错误消息")
+    @Column(length=2000)
     private String errorMsg;
 
     /** 操作时间 */

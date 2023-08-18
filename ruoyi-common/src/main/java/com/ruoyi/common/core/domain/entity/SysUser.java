@@ -3,9 +3,7 @@ package com.ruoyi.common.core.domain.entity;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -15,12 +13,17 @@ import com.ruoyi.common.annotation.Excel.Type;
 import com.ruoyi.common.annotation.Excels;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.xss.Xss;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * 用户对象 sys_user
  * 
  * @author ruoyi
  */
+@Entity
+@DynamicInsert
+@DynamicUpdate
 public class SysUser extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -81,18 +84,23 @@ public class SysUser extends BaseEntity
         @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
         @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT)
     })
+    @Transient
     private SysDept dept;
 
     /** 角色对象 */
+    @Transient
     private List<SysRole> roles;
 
     /** 角色组 */
+    @Transient
     private Long[] roleIds;
 
     /** 岗位组 */
+    @Transient
     private Long[] postIds;
 
     /** 角色ID */
+    @Transient
     private Long roleId;
 
     public SysUser()
@@ -148,7 +156,6 @@ public class SysUser extends BaseEntity
     }
 
     @Xss(message = "用户账号不能包含脚本字符")
-    @NotBlank(message = "用户账号不能为空")
     @Size(min = 0, max = 30, message = "用户账号长度不能超过30个字符")
     public String getUserName()
     {
@@ -325,6 +332,7 @@ public class SysUser extends BaseEntity
             .append("updateTime", getUpdateTime())
             .append("remark", getRemark())
             .append("dept", getDept())
+                .append("roles", getRoles())
             .toString();
     }
 }

@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.system.domain.SysNotice;
 
 /**
@@ -24,7 +26,7 @@ public interface ISysNoticeService
      * @param notice 公告信息
      * @return 公告集合
      */
-    public List<SysNotice> selectNoticeList(SysNotice notice);
+    public List<SysNotice> selectNoticeList(SysNotice notice, PageDomain pageDomain);
 
     /**
      * 新增公告

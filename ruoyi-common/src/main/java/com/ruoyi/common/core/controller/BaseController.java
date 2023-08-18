@@ -84,23 +84,32 @@ public class BaseController
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected TableDataInfo getDataTable(List<?> list)
     {
-        TableDataInfo rspData = new TableDataInfo();
-        rspData.setCode(HttpStatus.SUCCESS);
-        rspData.setMsg("查询成功");
-        rspData.setRows(list);
-        rspData.setTotal(new PageInfo(list).getTotal());
-        return rspData;
+        if (list instanceof PagedList<?>){
+            TableDataInfo rspData = new TableDataInfo();
+            rspData.setCode(HttpStatus.SUCCESS);
+            rspData.setMsg("查询成功");
+            rspData.setRows(list);
+            rspData.setTotal(((PagedList)list).getTotalSize());
+            return rspData;
+        }else{
+            TableDataInfo rspData = new TableDataInfo();
+            rspData.setCode(HttpStatus.SUCCESS);
+            rspData.setMsg("查询成功");
+            rspData.setRows(list);
+            rspData.setTotal(new PageInfo(list).getTotal());
+            return rspData;
+        }
     }
 
-    protected TableDataInfo getDslDataTable(List<?> list)
-    {
-        TableDataInfo rspData = new TableDataInfo();
-        rspData.setCode(HttpStatus.SUCCESS);
-        rspData.setMsg("查询成功");
-        rspData.setRows(list);
-        rspData.setTotal(((PagedList)list).getTotalSize());
-        return rspData;
-    }
+//    protected TableDataInfo getDslDataTable(List<?> list)
+//    {
+//        TableDataInfo rspData = new TableDataInfo();
+//        rspData.setCode(HttpStatus.SUCCESS);
+//        rspData.setMsg("查询成功");
+//        rspData.setRows(list);
+//        rspData.setTotal(((PagedList)list).getTotalSize());
+//        return rspData;
+//    }
 
     /**
      * 返回成功

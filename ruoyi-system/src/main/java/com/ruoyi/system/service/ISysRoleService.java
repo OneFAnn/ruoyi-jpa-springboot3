@@ -3,6 +3,7 @@ package com.ruoyi.system.service;
 import java.util.List;
 import java.util.Set;
 import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.system.domain.SysUserRole;
 
 /**
@@ -18,7 +19,7 @@ public interface ISysRoleService
      * @param role 角色信息
      * @return 角色数据集合信息
      */
-    public List<SysRole> selectRoleList(SysRole role);
+    public List<SysRole> selectRoleList(SysRole role, PageDomain pageDomain);
 
     /**
      * 根据用户ID查询角色列表
@@ -95,7 +96,7 @@ public interface ISysRoleService
      * @param roleId 角色ID
      * @return 结果
      */
-    public int countUserRoleByRoleId(Long roleId);
+    public long countUserRoleByRoleId(Long roleId);
 
     /**
      * 新增保存角色信息
@@ -135,7 +136,7 @@ public interface ISysRoleService
      * @param roleId 角色ID
      * @return 结果
      */
-    public int deleteRoleById(Long roleId);
+    public long deleteRoleById(Long roleId);
 
     /**
      * 批量删除角色信息
@@ -151,7 +152,7 @@ public interface ISysRoleService
      * @param userRole 用户和角色关联信息
      * @return 结果
      */
-    public int deleteAuthUser(SysUserRole userRole);
+    public long deleteAuthUser(SysUserRole userRole);
 
     /**
      * 批量取消授权用户角色
@@ -160,7 +161,7 @@ public interface ISysRoleService
      * @param userIds 需要取消授权的用户数据ID
      * @return 结果
      */
-    public int deleteAuthUsers(Long roleId, Long[] userIds);
+    public long deleteAuthUsers(Long roleId, Long[] userIds);
 
     /**
      * 批量选择授权用户角色

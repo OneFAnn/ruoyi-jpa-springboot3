@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.monitor;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.TableSupport;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,8 +37,8 @@ public class SysOperlogController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysOperLog operLog)
     {
-        startPage();
-        List<SysOperLog> list = operLogService.selectOperLogList(operLog);
+
+        List<SysOperLog> list = operLogService.selectOperLogList(operLog, TableSupport.getPageDomain());
         return getDataTable(list);
     }
 
@@ -45,7 +47,7 @@ public class SysOperlogController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysOperLog operLog)
     {
-        List<SysOperLog> list = operLogService.selectOperLogList(operLog);
+        List<SysOperLog> list = operLogService.selectOperLogList(operLog,null);
         ExcelUtil<SysOperLog> util = new ExcelUtil<SysOperLog>(SysOperLog.class);
         util.exportExcel(response, list, "操作日志");
     }

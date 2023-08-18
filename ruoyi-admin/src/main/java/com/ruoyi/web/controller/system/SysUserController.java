@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.ruoyi.common.core.page.TableSupport;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,8 +62,8 @@ public class SysUserController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysUser user)
     {
-        startPage();
-        List<SysUser> list = userService.selectUserList(user);
+
+        List<SysUser> list = userService.selectUserList(user, TableSupport.getPageDomain());
         return getDataTable(list);
     }
 
@@ -70,7 +72,7 @@ public class SysUserController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysUser user)
     {
-        List<SysUser> list = userService.selectUserList(user);
+        List<SysUser> list = userService.selectUserList(user,null);
         ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
         util.exportExcel(response, list, "用户数据");
     }
@@ -179,7 +181,7 @@ public class SysUserController extends BaseController
         {
             return error("当前用户不能删除");
         }
-        return toAjax(userService.deleteUserByIds(userIds));
+        return toAjax((int) userService.deleteUserByIds(userIds));
     }
 
     /**

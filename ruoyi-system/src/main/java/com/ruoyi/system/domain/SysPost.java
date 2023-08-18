@@ -1,8 +1,6 @@
 package com.ruoyi.system.domain;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,12 +9,17 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * 岗位表 sys_post
  * 
  * @author ruoyi
  */
+@Entity
+@DynamicUpdate
+@DynamicInsert
 public class SysPost extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -44,6 +47,7 @@ public class SysPost extends BaseEntity
     private String status;
 
     /** 用户是否存在此岗位标识 默认不存在 */
+    @Transient
     private boolean flag = false;
 
     public Long getPostId()

@@ -1,6 +1,9 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.PageDomain;
+import com.ruoyi.system.repository.SysOperLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.domain.SysOperLog;
@@ -15,8 +18,9 @@ import com.ruoyi.system.service.ISysOperLogService;
 @Service
 public class SysOperLogServiceImpl implements ISysOperLogService
 {
+
     @Autowired
-    private SysOperLogMapper operLogMapper;
+    private SysOperLogRepository operLogRepository;
 
     /**
      * 新增操作日志
@@ -26,7 +30,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService
     @Override
     public void insertOperlog(SysOperLog operLog)
     {
-        operLogMapper.insertOperlog(operLog);
+        operLogRepository.save(operLog);
     }
 
     /**
@@ -36,9 +40,9 @@ public class SysOperLogServiceImpl implements ISysOperLogService
      * @return 操作日志集合
      */
     @Override
-    public List<SysOperLog> selectOperLogList(SysOperLog operLog)
+    public List<SysOperLog> selectOperLogList(SysOperLog operLog, PageDomain pageDomain)
     {
-        return operLogMapper.selectOperLogList(operLog);
+        return operLogRepository.selectOperLogList(operLog,pageDomain);
     }
 
     /**
@@ -50,7 +54,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService
     @Override
     public int deleteOperLogByIds(Long[] operIds)
     {
-        return operLogMapper.deleteOperLogByIds(operIds);
+        return (int) operLogRepository.deleteOperLogByIds(operIds);
     }
 
     /**
@@ -62,7 +66,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService
     @Override
     public SysOperLog selectOperLogById(Long operId)
     {
-        return operLogMapper.selectOperLogById(operId);
+        return operLogRepository.findById(operId).get();
     }
 
     /**
@@ -71,6 +75,6 @@ public class SysOperLogServiceImpl implements ISysOperLogService
     @Override
     public void cleanOperLog()
     {
-        operLogMapper.cleanOperLog();
+        operLogRepository.deleteAllInBatch();
     }
 }

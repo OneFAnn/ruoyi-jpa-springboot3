@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
 import jakarta.persistence.PersistenceUnit;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,20 +19,21 @@ import org.springframework.context.annotation.Scope;
 @Configuration(proxyBeanMethods = false)
 public class BlazePersistenceConfig {
 
-    @PersistenceUnit
+    @Autowired
     private EntityManagerFactory entityManagerFactory;
 
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-    @Lazy(false)
-    public CriteriaBuilderFactory createCriteriaBuilderFactory() {
-        CriteriaBuilderConfiguration config = Criteria.getDefault();
-        // do some configuration
-        return config.createCriteriaBuilderFactory(entityManagerFactory);
-    }
+//    @Bean
+//    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+//    @Lazy(false)
+//    public CriteriaBuilderFactory createCriteriaBuilderFactory() {
+//        CriteriaBuilderConfiguration config = Criteria.getDefault();
+//        // do some configuration
+//        return config.createCriteriaBuilderFactory(entityManagerFactory);
+//    }
 
     @Bean
-    public BlazeJPAQueryFactory createBlazeJPAQuery(EntityManager entityManager,CriteriaBuilderFactory criteriaBuilderFactory) {
-        return new BlazeJPAQueryFactory(entityManager, criteriaBuilderFactory);
+    public BlazeJPAQueryFactory createBlazeJPAQuery(EntityManager entityManager,EntityManagerFactory entityManagerFactory) {
+        CriteriaBuilderConfiguration config = Criteria.getDefault();
+        return new BlazeJPAQueryFactory(entityManager, config.createCriteriaBuilderFactory(entityManagerFactory));
     }
 }

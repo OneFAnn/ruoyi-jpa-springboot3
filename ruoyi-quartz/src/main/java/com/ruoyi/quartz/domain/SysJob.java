@@ -2,6 +2,7 @@ package com.ruoyi.quartz.domain;
 
 import java.util.Date;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,12 +17,17 @@ import com.ruoyi.common.constant.ScheduleConstants;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.quartz.util.CronUtils;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * 定时任务调度表 sys_job
  * 
  * @author ruoyi
  */
+@Entity
+@DynamicInsert
+@DynamicUpdate
 public class SysJob extends BaseEntity
 {
     private static final long serialVersionUID = 1L;

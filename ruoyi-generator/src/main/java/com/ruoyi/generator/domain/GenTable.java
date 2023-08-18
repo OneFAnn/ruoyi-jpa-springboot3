@@ -2,21 +2,24 @@ package com.ruoyi.generator.domain;
 
 import java.util.List;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.apache.commons.lang3.ArrayUtils;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.utils.StringUtils;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * 业务表 gen_table
  * 
  * @author ruoyi
  */
+@Entity
+@DynamicUpdate
+@DynamicInsert
 public class GenTable extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -74,31 +77,39 @@ public class GenTable extends BaseEntity
     private String genPath;
 
     /** 主键信息 */
+    @Transient
     private GenTableColumn pkColumn;
 
     /** 子表信息 */
+    @Transient
     private GenTable subTable;
 
     /** 表列信息 */
     @Valid
+    @Transient
     private List<GenTableColumn> columns;
 
     /** 其它生成选项 */
     private String options;
 
     /** 树编码字段 */
+    @Transient
     private String treeCode;
 
     /** 树父编码字段 */
+    @Transient
     private String treeParentCode;
 
     /** 树名称字段 */
+    @Transient
     private String treeName;
 
     /** 上级菜单ID字段 */
+    @Transient
     private String parentMenuId;
 
     /** 上级菜单名称字段 */
+    @Transient
     private String parentMenuName;
 
     public Long getTableId()

@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import com.ruoyi.common.core.domain.entity.SysDictData;
+import com.ruoyi.common.core.page.PageDomain;
 
 /**
  * 字典 业务层
@@ -16,7 +17,7 @@ public interface ISysDictDataService
      * @param dictData 字典数据信息
      * @return 字典数据集合信息
      */
-    public List<SysDictData> selectDictDataList(SysDictData dictData);
+    public List<SysDictData> selectDictDataList(SysDictData dictData, PageDomain pageDomain);
 
     /**
      * 根据字典类型和字典键值查询字典数据信息

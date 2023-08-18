@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 /**
@@ -20,6 +21,7 @@ import org.hibernate.annotations.DynamicUpdate;
  */
 @Entity
 @DynamicUpdate
+@DynamicInsert
 public class SysConfig extends BaseEntity
 {
     private static final long serialVersionUID = 1L;

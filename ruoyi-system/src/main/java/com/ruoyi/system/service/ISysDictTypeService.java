@@ -3,6 +3,7 @@ package com.ruoyi.system.service;
 import java.util.List;
 import com.ruoyi.common.core.domain.entity.SysDictData;
 import com.ruoyi.common.core.domain.entity.SysDictType;
+import com.ruoyi.common.core.page.PageDomain;
 
 /**
  * 字典 业务层
@@ -17,7 +18,7 @@ public interface ISysDictTypeService
      * @param dictType 字典类型信息
      * @return 字典类型集合信息
      */
-    public List<SysDictType> selectDictTypeList(SysDictType dictType);
+    public List<SysDictType> selectDictTypeList(SysDictType dictType, PageDomain pageDomain);
 
     /**
      * 根据所有字典类型

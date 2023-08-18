@@ -10,7 +10,7 @@ import com.ruoyi.system.domain.SysOperLog;
  */
 public interface SysOperLogMapper
 {
-    /**
+    /**f
      * 新增操作日志
      * 
      * @param operLog 操作日志对象

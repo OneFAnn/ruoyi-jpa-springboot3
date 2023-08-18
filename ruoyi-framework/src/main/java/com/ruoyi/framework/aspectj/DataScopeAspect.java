@@ -1,7 +1,20 @@
 package com.ruoyi.framework.aspectj;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanPath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
+import com.ruoyi.common.core.domain.entity.QSysDept;
+import com.ruoyi.common.core.domain.entity.QSysUser;
+import com.ruoyi.system.domain.QSysRoleDept;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -55,6 +68,7 @@ public class DataScopeAspect
      */
     public static final String DATA_SCOPE = "dataScope";
 
+
     @Before("@annotation(controllerDataScope)")
     public void doBefore(JoinPoint point, DataScope controllerDataScope) throws Throwable
     {
@@ -88,11 +102,12 @@ public class DataScopeAspect
      * @param userAlias 用户别名
      * @param permission 权限字符
      */
-    public static void dataScopeFilter(JoinPoint joinPoint, SysUser user, String deptAlias, String userAlias, String permission)
-    {
+    public static void dataScopeFilter(JoinPoint joinPoint, SysUser user, String deptAlias, String userAlias, String permission)  {
         StringBuilder sqlString = new StringBuilder();
         List<String> conditions = new ArrayList<String>();
-
+        QSysDept dept =QSysDept.sysDept;
+        QSysUser sysUser = QSysUser.sysUser;
+        BooleanExpression booleanExpression = null;
         for (SysRole role : user.getRoles())
         {
             String dataScope = role.getDataScope();
@@ -113,16 +128,25 @@ public class DataScopeAspect
             }
             else if (DATA_SCOPE_CUSTOM.equals(dataScope))
             {
+                QSysRoleDept roleDept = new QSysRoleDept("scoperd");
+                booleanExpression = dept.deptId.notIn(JPAExpressions.select(roleDept.deptId).from(roleDept).where(roleDept.roleId.eq(role.getRoleId())));
+
                 sqlString.append(StringUtils.format(
                         " OR {}.dept_id IN ( SELECT dept_id FROM sys_role_dept WHERE role_id = {} ) ", deptAlias,
                         role.getRoleId()));
             }
             else if (DATA_SCOPE_DEPT.equals(dataScope))
             {
+                QSysDept sysDept = new QSysDept("subDept");
+                booleanExpression = sysDept.deptId.eq(user.getDeptId());
+
                 sqlString.append(StringUtils.format(" OR {}.dept_id = {} ", deptAlias, user.getDeptId()));
             }
             else if (DATA_SCOPE_DEPT_AND_CHILD.equals(dataScope))
             {
+                QSysDept sysDept = new QSysDept("subDept");
+                booleanExpression = dept.deptId.in(JPAExpressions.select(sysDept.deptId).from(sysDept).where(sysDept.deptId.eq(user.getDeptId()).or(Expressions.booleanTemplate("function('FIND_IN_SET',{0},{1})>0",user.getDeptId(),sysDept.ancestors))));
+
                 sqlString.append(StringUtils.format(
                         " OR {}.dept_id IN ( SELECT dept_id FROM sys_dept WHERE dept_id = {} or find_in_set( {} , ancestors ) )",
                         deptAlias, user.getDeptId(), user.getDeptId()));
@@ -131,11 +155,13 @@ public class DataScopeAspect
             {
                 if (StringUtils.isNotBlank(userAlias))
                 {
+                    booleanExpression =sysUser.userId.eq(user.getUserId());
                     sqlString.append(StringUtils.format(" OR {}.user_id = {} ", userAlias, user.getUserId()));
                 }
                 else
                 {
                     // 数据权限为仅本人且没有userAlias别名不查询任何数据
+                    booleanExpression = dept.deptId.eq(0l);
                     sqlString.append(StringUtils.format(" OR {}.dept_id = 0 ", deptAlias));
                 }
             }
@@ -145,6 +171,7 @@ public class DataScopeAspect
         // 多角色情况下，所有角色都不包含传递过来的权限字符，这个时候sqlString也会为空，所以要限制一下,不查询任何数据
         if (StringUtils.isEmpty(conditions))
         {
+            booleanExpression = dept.deptId.eq(0l);
             sqlString.append(StringUtils.format(" OR {}.dept_id = 0 ", deptAlias));
         }
 
@@ -155,6 +182,14 @@ public class DataScopeAspect
             {
                 BaseEntity baseEntity = (BaseEntity) params;
                 baseEntity.getParams().put(DATA_SCOPE, " AND (" + sqlString.substring(4) + ")");
+            }
+        }
+        if (booleanExpression!=null){
+            Object params = joinPoint.getArgs()[0];
+            if (StringUtils.isNotNull(params) && params instanceof BaseEntity)
+            {
+                BaseEntity baseEntity = (BaseEntity) params;
+                baseEntity.getParams().put(DATA_SCOPE, booleanExpression);
             }
         }
     }

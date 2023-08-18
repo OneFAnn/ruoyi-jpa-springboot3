@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.system.domain.SysPost;
 
 /**
@@ -16,7 +18,7 @@ public interface ISysPostService
      * @param post 岗位信息
      * @return 岗位列表
      */
-    public List<SysPost> selectPostList(SysPost post);
+    public List<SysPost> selectPostList(SysPost post, PageDomain pageDomain);
 
     /**
      * 查询所有岗位
@@ -63,7 +65,7 @@ public interface ISysPostService
      * @param postId 岗位ID
      * @return 结果
      */
-    public int countUserPostById(Long postId);
+    public long countUserPostById(Long postId);
 
     /**
      * 删除岗位信息
@@ -79,7 +81,7 @@ public interface ISysPostService
      * @param postIds 需要删除的岗位ID
      * @return 结果
      */
-    public int deletePostByIds(Long[] postIds);
+    public long deletePostByIds(Long[] postIds);
 
     /**
      * 新增保存岗位信息

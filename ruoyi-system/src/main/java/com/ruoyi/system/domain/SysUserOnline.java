@@ -1,19 +1,22 @@
 package com.ruoyi.system.domain;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * 当前在线会话
  * 
  * @author ruoyi
  */
+
 public class SysUserOnline
 {
     /** 会话编号 */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private String tokenId;
 
     /** 部门名称 */

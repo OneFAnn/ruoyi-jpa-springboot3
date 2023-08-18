@@ -43,9 +43,8 @@ public class SysConfigController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysConfig config)
     {
-//        startPage();
         List<SysConfig> list = configService.selectConfigList(config,TableSupport.getPageDomain());
-        return getDslDataTable(list);
+        return getDataTable(list);
     }
 
     @Log(title = "参数管理", businessType = BusinessType.EXPORT)

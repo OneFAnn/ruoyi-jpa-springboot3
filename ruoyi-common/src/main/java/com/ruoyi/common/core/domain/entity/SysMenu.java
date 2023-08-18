@@ -3,21 +3,24 @@ package com.ruoyi.common.core.domain.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * 菜单权限表 sys_menu
  * 
  * @author ruoyi
  */
+@Entity
+@DynamicUpdate
+@DynamicInsert
 public class SysMenu extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -70,6 +73,7 @@ public class SysMenu extends BaseEntity
     private String icon;
 
     /** 子菜单 */
+    @Transient
     private List<SysMenu> children = new ArrayList<SysMenu>();
 
     public Long getMenuId()

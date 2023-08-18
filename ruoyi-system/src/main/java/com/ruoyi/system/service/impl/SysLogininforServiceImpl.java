@@ -1,6 +1,10 @@
 package com.ruoyi.system.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
+
+import com.ruoyi.common.core.page.PageDomain;
+import com.ruoyi.system.repository.SysLogininforRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.domain.SysLogininfor;
@@ -16,9 +20,10 @@ import com.ruoyi.system.service.ISysLogininforService;
 public class SysLogininforServiceImpl implements ISysLogininforService
 {
 
-    @Autowired
-    private SysLogininforMapper logininforMapper;
 
+
+    @Autowired
+    private SysLogininforRepository logininforRepository;
     /**
      * 新增系统登录日志
      * 
@@ -27,7 +32,7 @@ public class SysLogininforServiceImpl implements ISysLogininforService
     @Override
     public void insertLogininfor(SysLogininfor logininfor)
     {
-        logininforMapper.insertLogininfor(logininfor);
+        logininforRepository.save(logininfor);
     }
 
     /**
@@ -37,9 +42,9 @@ public class SysLogininforServiceImpl implements ISysLogininforService
      * @return 登录记录集合
      */
     @Override
-    public List<SysLogininfor> selectLogininforList(SysLogininfor logininfor)
+    public List<SysLogininfor> selectLogininforList(SysLogininfor logininfor, PageDomain pageDomain)
     {
-        return logininforMapper.selectLogininforList(logininfor);
+        return logininforRepository.selectLogininforList(logininfor,pageDomain);
     }
 
     /**
@@ -51,15 +56,14 @@ public class SysLogininforServiceImpl implements ISysLogininforService
     @Override
     public int deleteLogininforByIds(Long[] infoIds)
     {
-        return logininforMapper.deleteLogininforByIds(infoIds);
+        logininforRepository.deleteAllById(Arrays.asList(infoIds));
+        return 1;
     }
 
-    /**
-     * 清空系统登录日志
-     */
     @Override
-    public void cleanLogininfor()
-    {
-        logininforMapper.cleanLogininfor();
+    public void cleanLogininfor() {
+        logininforRepository.deleteAllInBatch();
     }
+
+
 }

@@ -1,6 +1,8 @@
 package com.ruoyi.quartz.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.quartz.domain.SysJobLog;
 
 /**
@@ -16,7 +18,7 @@ public interface ISysJobLogService
      * @param jobLog 调度日志信息
      * @return 调度任务日志集合
      */
-    public List<SysJobLog> selectJobLogList(SysJobLog jobLog);
+    public List<SysJobLog> selectJobLogList(SysJobLog jobLog, PageDomain pageDomain);
 
     /**
      * 通过调度任务日志ID查询调度信息
@@ -39,7 +41,7 @@ public interface ISysJobLogService
      * @param logIds 需要删除的日志ID
      * @return 结果
      */
-    public int deleteJobLogByIds(Long[] logIds);
+    public long deleteJobLogByIds(Long[] logIds);
 
     /**
      * 删除任务日志

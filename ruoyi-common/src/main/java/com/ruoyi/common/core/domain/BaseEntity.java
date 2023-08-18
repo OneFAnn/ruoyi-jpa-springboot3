@@ -7,9 +7,14 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Transient;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * Entity基类
@@ -17,6 +22,7 @@ import jakarta.persistence.Transient;
  * @author ruoyi
  */
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public class BaseEntity implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -27,17 +33,23 @@ public class BaseEntity implements Serializable
     private String searchValue;
 
     /** 创建者 */
+    @ColumnDefault("''")
+    @Column(length = 64)
     private String createBy;
 
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @CreatedDate
     private Date createTime;
 
     /** 更新者 */
+    @ColumnDefault("''")
+    @Column(length = 64)
     private String updateBy;
 
     /** 更新时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @LastModifiedDate
     private Date updateTime;
 
     /** 备注 */

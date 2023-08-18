@@ -41,7 +41,7 @@ public class PageDomain
     }
 
     public int offset(){
-        return (this.pageNum-1)/this.pageSize;
+        return (this.pageNum-1)*this.pageSize;
     }
 
     public Optional<Sort> getJpaOrderBy()

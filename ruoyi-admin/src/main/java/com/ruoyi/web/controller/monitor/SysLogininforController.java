@@ -1,6 +1,9 @@
 package com.ruoyi.web.controller.monitor;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.PageDomain;
+import com.ruoyi.common.core.page.TableSupport;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,8 +42,8 @@ public class SysLogininforController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysLogininfor logininfor)
     {
-        startPage();
-        List<SysLogininfor> list = logininforService.selectLogininforList(logininfor);
+//        startPage();
+        List<SysLogininfor> list = logininforService.selectLogininforList(logininfor, TableSupport.getPageDomain());
         return getDataTable(list);
     }
 
@@ -49,7 +52,7 @@ public class SysLogininforController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysLogininfor logininfor)
     {
-        List<SysLogininfor> list = logininforService.selectLogininforList(logininfor);
+        List<SysLogininfor> list = logininforService.selectLogininforList(logininfor,null);
         ExcelUtil<SysLogininfor> util = new ExcelUtil<SysLogininfor>(SysLogininfor.class);
         util.exportExcel(response, list, "登录日志");
     }

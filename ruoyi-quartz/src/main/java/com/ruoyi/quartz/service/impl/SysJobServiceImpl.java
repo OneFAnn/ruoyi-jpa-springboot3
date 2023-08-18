@@ -1,6 +1,9 @@
 package com.ruoyi.quartz.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.PageDomain;
+import com.ruoyi.quartz.repository.SysJobRepository;
 import jakarta.annotation.PostConstruct;
 import org.quartz.JobDataMap;
 import org.quartz.JobKey;
@@ -29,7 +32,7 @@ public class SysJobServiceImpl implements ISysJobService
     private Scheduler scheduler;
 
     @Autowired
-    private SysJobMapper jobMapper;
+    private SysJobRepository jobRepository;
 
     /**
      * 项目启动时，初始化定时器 主要是防止手动修改数据库导致未同步到定时任务处理（注：不能手动修改数据库ID和任务组名，否则会导致脏数据）
@@ -38,7 +41,7 @@ public class SysJobServiceImpl implements ISysJobService
     public void init() throws SchedulerException, TaskException
     {
         scheduler.clear();
-        List<SysJob> jobList = jobMapper.selectJobAll();
+        List<SysJob> jobList = jobRepository.findAll();
         for (SysJob job : jobList)
         {
             ScheduleUtils.createScheduleJob(scheduler, job);
@@ -52,9 +55,9 @@ public class SysJobServiceImpl implements ISysJobService
      * @return
      */
     @Override
-    public List<SysJob> selectJobList(SysJob job)
+    public List<SysJob> selectJobList(SysJob job, PageDomain pageDomain)
     {
-        return jobMapper.selectJobList(job);
+        return jobRepository.selectJobList(job,pageDomain);
     }
 
     /**
@@ -66,7 +69,7 @@ public class SysJobServiceImpl implements ISysJobService
     @Override
     public SysJob selectJobById(Long jobId)
     {
-        return jobMapper.selectJobById(jobId);
+        return jobRepository.findById(jobId).get();
     }
 
     /**
@@ -81,12 +84,9 @@ public class SysJobServiceImpl implements ISysJobService
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
         job.setStatus(ScheduleConstants.Status.PAUSE.getValue());
-        int rows = jobMapper.updateJob(job);
-        if (rows > 0)
-        {
-            scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
-        }
-        return rows;
+        jobRepository.saveAndFlush(job);
+        scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+        return 1;
     }
 
     /**
@@ -101,12 +101,9 @@ public class SysJobServiceImpl implements ISysJobService
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
         job.setStatus(ScheduleConstants.Status.NORMAL.getValue());
-        int rows = jobMapper.updateJob(job);
-        if (rows > 0)
-        {
-            scheduler.resumeJob(ScheduleUtils.getJobKey(jobId, jobGroup));
-        }
-        return rows;
+        jobRepository.saveAndFlush(job);
+        scheduler.resumeJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+        return 1;
     }
 
     /**
@@ -120,12 +117,10 @@ public class SysJobServiceImpl implements ISysJobService
     {
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
-        int rows = jobMapper.deleteJobById(jobId);
-        if (rows > 0)
-        {
-            scheduler.deleteJob(ScheduleUtils.getJobKey(jobId, jobGroup));
-        }
-        return rows;
+        jobRepository.deleteById(jobId);
+        scheduler.deleteJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+
+        return 1;
     }
 
     /**
@@ -140,7 +135,7 @@ public class SysJobServiceImpl implements ISysJobService
     {
         for (Long jobId : jobIds)
         {
-            SysJob job = jobMapper.selectJobById(jobId);
+            SysJob job = jobRepository.findById(jobId).get();
             deleteJob(job);
         }
     }
@@ -202,12 +197,10 @@ public class SysJobServiceImpl implements ISysJobService
     public int insertJob(SysJob job) throws SchedulerException, TaskException
     {
         job.setStatus(ScheduleConstants.Status.PAUSE.getValue());
-        int rows = jobMapper.insertJob(job);
-        if (rows > 0)
-        {
-            ScheduleUtils.createScheduleJob(scheduler, job);
-        }
-        return rows;
+        jobRepository.saveAndFlush(job);
+        ScheduleUtils.createScheduleJob(scheduler, job);
+
+        return 1;
     }
 
     /**
@@ -220,12 +213,9 @@ public class SysJobServiceImpl implements ISysJobService
     public int updateJob(SysJob job) throws SchedulerException, TaskException
     {
         SysJob properties = selectJobById(job.getJobId());
-        int rows = jobMapper.updateJob(job);
-        if (rows > 0)
-        {
-            updateSchedulerJob(job, properties.getJobGroup());
-        }
-        return rows;
+        jobRepository.saveAndFlush(job);
+        updateSchedulerJob(job, properties.getJobGroup());
+        return 1;
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.ruoyi.quartz.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.TableSupport;
 import jakarta.servlet.http.HttpServletResponse;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +48,7 @@ public class SysJobController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysJob sysJob)
     {
-        startPage();
-        List<SysJob> list = jobService.selectJobList(sysJob);
+        List<SysJob> list = jobService.selectJobList(sysJob, TableSupport.getPageDomain());
         return getDataTable(list);
     }
 
@@ -59,7 +60,7 @@ public class SysJobController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysJob sysJob)
     {
-        List<SysJob> list = jobService.selectJobList(sysJob);
+        List<SysJob> list = jobService.selectJobList(sysJob,null);
         ExcelUtil<SysJob> util = new ExcelUtil<SysJob>(SysJob.class);
         util.exportExcel(response, list, "定时任务");
     }

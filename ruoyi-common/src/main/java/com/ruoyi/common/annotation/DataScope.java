@@ -1,5 +1,10 @@
 package com.ruoyi.common.annotation;
 
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanPath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -30,4 +35,6 @@ public @interface DataScope
      * 权限字符（用于多个角色匹配符合要求的权限）默认根据权限注解@ss获取，多个权限用逗号分隔开来
      */
     public String permission() default "";
+
+    public Class booleanPath() default BooleanPath.class;
 }

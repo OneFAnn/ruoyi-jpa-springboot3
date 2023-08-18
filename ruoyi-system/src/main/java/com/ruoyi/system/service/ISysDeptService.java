@@ -3,6 +3,7 @@ package com.ruoyi.system.service;
 import java.util.List;
 import com.ruoyi.common.core.domain.TreeSelect;
 import com.ruoyi.common.core.domain.entity.SysDept;
+import com.ruoyi.common.core.page.PageDomain;
 
 /**
  * 部门管理 服务层

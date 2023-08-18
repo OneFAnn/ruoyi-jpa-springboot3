@@ -1,6 +1,9 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.TableSupport;
+import jakarta.persistence.Table;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,8 +62,8 @@ public class SysRoleController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysRole role)
     {
-        startPage();
-        List<SysRole> list = roleService.selectRoleList(role);
+
+        List<SysRole> list = roleService.selectRoleList(role, TableSupport.getPageDomain());
         return getDataTable(list);
     }
 
@@ -69,7 +72,7 @@ public class SysRoleController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysRole role)
     {
-        List<SysRole> list = roleService.selectRoleList(role);
+        List<SysRole> list = roleService.selectRoleList(role,null);
         ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
         util.exportExcel(response, list, "角色数据");
     }
@@ -196,8 +199,7 @@ public class SysRoleController extends BaseController
     @GetMapping("/authUser/allocatedList")
     public TableDataInfo allocatedList(SysUser user)
     {
-        startPage();
-        List<SysUser> list = userService.selectAllocatedList(user);
+        List<SysUser> list = userService.selectAllocatedList(user,TableSupport.getPageDomain());
         return getDataTable(list);
     }
 
@@ -208,8 +210,7 @@ public class SysRoleController extends BaseController
     @GetMapping("/authUser/unallocatedList")
     public TableDataInfo unallocatedList(SysUser user)
     {
-        startPage();
-        List<SysUser> list = userService.selectUnallocatedList(user);
+        List<SysUser> list = userService.selectUnallocatedList(user,TableSupport.getPageDomain());
         return getDataTable(list);
     }
 
@@ -221,7 +222,7 @@ public class SysRoleController extends BaseController
     @PutMapping("/authUser/cancel")
     public AjaxResult cancelAuthUser(@RequestBody SysUserRole userRole)
     {
-        return toAjax(roleService.deleteAuthUser(userRole));
+        return toAjax((int) roleService.deleteAuthUser(userRole));
     }
 
     /**
@@ -232,7 +233,7 @@ public class SysRoleController extends BaseController
     @PutMapping("/authUser/cancelAll")
     public AjaxResult cancelAuthUserAll(Long roleId, Long[] userIds)
     {
-        return toAjax(roleService.deleteAuthUsers(roleId, userIds));
+        return toAjax((int) roleService.deleteAuthUsers(roleId, userIds));
     }
 
     /**

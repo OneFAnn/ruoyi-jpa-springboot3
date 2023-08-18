@@ -1,6 +1,9 @@
 package com.ruoyi.quartz.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.PageDomain;
+import com.ruoyi.quartz.repository.SysJobLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.quartz.domain.SysJobLog;
@@ -16,7 +19,7 @@ import com.ruoyi.quartz.service.ISysJobLogService;
 public class SysJobLogServiceImpl implements ISysJobLogService
 {
     @Autowired
-    private SysJobLogMapper jobLogMapper;
+    private SysJobLogRepository jobLogRepository;
 
     /**
      * 获取quartz调度器日志的计划任务
@@ -25,9 +28,9 @@ public class SysJobLogServiceImpl implements ISysJobLogService
      * @return 调度任务日志集合
      */
     @Override
-    public List<SysJobLog> selectJobLogList(SysJobLog jobLog)
+    public List<SysJobLog> selectJobLogList(SysJobLog jobLog, PageDomain pageDomain)
     {
-        return jobLogMapper.selectJobLogList(jobLog);
+        return jobLogRepository.selectJobLogList(jobLog,pageDomain);
     }
 
     /**
@@ -39,7 +42,7 @@ public class SysJobLogServiceImpl implements ISysJobLogService
     @Override
     public SysJobLog selectJobLogById(Long jobLogId)
     {
-        return jobLogMapper.selectJobLogById(jobLogId);
+        return jobLogRepository.findById(jobLogId).get();
     }
 
     /**
@@ -50,7 +53,7 @@ public class SysJobLogServiceImpl implements ISysJobLogService
     @Override
     public void addJobLog(SysJobLog jobLog)
     {
-        jobLogMapper.insertJobLog(jobLog);
+        jobLogRepository.save(jobLog);
     }
 
     /**
@@ -60,9 +63,9 @@ public class SysJobLogServiceImpl implements ISysJobLogService
      * @return 结果
      */
     @Override
-    public int deleteJobLogByIds(Long[] logIds)
+    public long deleteJobLogByIds(Long[] logIds)
     {
-        return jobLogMapper.deleteJobLogByIds(logIds);
+        return jobLogRepository.deleteJobLogByIds(logIds);
     }
 
     /**
@@ -73,7 +76,8 @@ public class SysJobLogServiceImpl implements ISysJobLogService
     @Override
     public int deleteJobLogById(Long jobId)
     {
-        return jobLogMapper.deleteJobLogById(jobId);
+        jobLogRepository.deleteById(jobId);
+        return 1;
     }
 
     /**
@@ -82,6 +86,6 @@ public class SysJobLogServiceImpl implements ISysJobLogService
     @Override
     public void cleanJobLog()
     {
-        jobLogMapper.cleanJobLog();
+        jobLogRepository.deleteAllInBatch();
     }
 }

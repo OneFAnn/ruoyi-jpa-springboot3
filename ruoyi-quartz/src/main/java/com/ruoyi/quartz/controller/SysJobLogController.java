@@ -1,6 +1,8 @@
 package com.ruoyi.quartz.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.TableSupport;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,8 +40,7 @@ public class SysJobLogController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysJobLog sysJobLog)
     {
-        startPage();
-        List<SysJobLog> list = jobLogService.selectJobLogList(sysJobLog);
+        List<SysJobLog> list = jobLogService.selectJobLogList(sysJobLog, TableSupport.getPageDomain());
         return getDataTable(list);
     }
 
@@ -51,7 +52,7 @@ public class SysJobLogController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysJobLog sysJobLog)
     {
-        List<SysJobLog> list = jobLogService.selectJobLogList(sysJobLog);
+        List<SysJobLog> list = jobLogService.selectJobLogList(sysJobLog,null);
         ExcelUtil<SysJobLog> util = new ExcelUtil<SysJobLog>(SysJobLog.class);
         util.exportExcel(response, list, "调度日志");
     }
@@ -75,7 +76,7 @@ public class SysJobLogController extends BaseController
     @DeleteMapping("/{jobLogIds}")
     public AjaxResult remove(@PathVariable Long[] jobLogIds)
     {
-        return toAjax(jobLogService.deleteJobLogByIds(jobLogIds));
+        return toAjax((int) jobLogService.deleteJobLogByIds(jobLogIds));
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.List;
+
+import com.ruoyi.common.core.page.TableSupport;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,8 +43,7 @@ public class SysPostController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysPost post)
     {
-        startPage();
-        List<SysPost> list = postService.selectPostList(post);
+        List<SysPost> list = postService.selectPostList(post, TableSupport.getPageDomain());
         return getDataTable(list);
     }
     
@@ -51,7 +52,7 @@ public class SysPostController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysPost post)
     {
-        List<SysPost> list = postService.selectPostList(post);
+        List<SysPost> list = postService.selectPostList(post,null);
         ExcelUtil<SysPost> util = new ExcelUtil<SysPost>(SysPost.class);
         util.exportExcel(response, list, "岗位数据");
     }
@@ -114,7 +115,7 @@ public class SysPostController extends BaseController
     @DeleteMapping("/{postIds}")
     public AjaxResult remove(@PathVariable Long[] postIds)
     {
-        return toAjax(postService.deletePostByIds(postIds));
+        return toAjax((int) postService.deletePostByIds(postIds));
     }
 
     /**

@@ -2,6 +2,7 @@ package com.ruoyi.quartz.domain;
 
 import java.util.Date;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -9,12 +10,17 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * 定时任务调度日志表 sys_job_log
  * 
  * @author ruoyi
  */
+@Entity
+@DynamicInsert
+@DynamicUpdate
 public class SysJobLog extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
