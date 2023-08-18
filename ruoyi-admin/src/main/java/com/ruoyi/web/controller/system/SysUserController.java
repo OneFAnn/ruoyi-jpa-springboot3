@@ -62,7 +62,6 @@ public class SysUserController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysUser user)
     {
-
         List<SysUser> list = userService.selectUserList(user, TableSupport.getPageDomain());
         return getDataTable(list);
     }

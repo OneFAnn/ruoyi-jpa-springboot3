@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -34,31 +35,40 @@ public class SysRole extends BaseEntity
 
     /** 角色名称 */
     @Excel(name = "角色名称")
+    @Column(length = 30)
     private String roleName;
 
     /** 角色权限 */
     @Excel(name = "角色权限")
+    @Column(length = 100)
     private String roleKey;
 
     /** 角色排序 */
     @Excel(name = "角色排序")
+    @Column(length = 4)
     private Integer roleSort;
 
     /** 数据范围（1：所有数据权限；2：自定义数据权限；3：本部门数据权限；4：本部门及以下数据权限；5：仅本人数据权限） */
     @Excel(name = "数据范围", readConverterExp = "1=所有数据权限,2=自定义数据权限,3=本部门数据权限,4=本部门及以下数据权限,5=仅本人数据权限")
+    @ColumnDefault("'1'")
+    @Column(length = 1)
     private String dataScope;
 
     /** 菜单树选择项是否关联显示（ 0：父子不互相关联显示 1：父子互相关联显示） */
-    private boolean menuCheckStrictly;
+    @ColumnDefault("true")
+    private Boolean menuCheckStrictly;
 
     /** 部门树选择项是否关联显示（0：父子不互相关联显示 1：父子互相关联显示 ） */
-    private boolean deptCheckStrictly;
+    @ColumnDefault("true")
+    private Boolean deptCheckStrictly;
 
     /** 角色状态（0正常 1停用） */
     @Excel(name = "角色状态", readConverterExp = "0=正常,1=停用")
     private String status;
 
     /** 删除标志（0代表存在 2代表删除） */
+    @ColumnDefault("'0'")
+    @Column(length = 1)
     private String delFlag;
 
     /** 用户是否存在此角色标识 默认不存在 */
@@ -152,22 +162,22 @@ public class SysRole extends BaseEntity
         this.dataScope = dataScope;
     }
 
-    public boolean isMenuCheckStrictly()
+    public Boolean isMenuCheckStrictly()
     {
         return menuCheckStrictly;
     }
 
-    public void setMenuCheckStrictly(boolean menuCheckStrictly)
+    public void setMenuCheckStrictly(Boolean menuCheckStrictly)
     {
         this.menuCheckStrictly = menuCheckStrictly;
     }
 
-    public boolean isDeptCheckStrictly()
+    public Boolean isDeptCheckStrictly()
     {
         return deptCheckStrictly;
     }
 
-    public void setDeptCheckStrictly(boolean deptCheckStrictly)
+    public void setDeptCheckStrictly(Boolean deptCheckStrictly)
     {
         this.deptCheckStrictly = deptCheckStrictly;
     }

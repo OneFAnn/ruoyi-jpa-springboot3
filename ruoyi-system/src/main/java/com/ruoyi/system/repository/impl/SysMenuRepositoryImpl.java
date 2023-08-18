@@ -22,6 +22,7 @@ import com.ruoyi.system.repository.SysMenuRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -59,7 +60,7 @@ public class SysMenuRepositoryImpl extends BaseRepositoryImpl<SysMenu,Long> impl
                         qSysMenu.menuName,qSysMenu.path,
                         qSysMenu.component,qSysMenu.query,
                         qSysMenu.visible,qSysMenu.status,
-                        Expressions.asString(qSysMenu.perms.coalesce("")),qSysMenu.isFrame,
+                        qSysMenu.perms,qSysMenu.isFrame,
                         qSysMenu.isCache,qSysMenu.menuType,
                         qSysMenu.icon,qSysMenu.orderNum,qSysMenu.createTime)
         ).from(qSysMenu).where(
@@ -138,7 +139,7 @@ public class SysMenuRepositoryImpl extends BaseRepositoryImpl<SysMenu,Long> impl
                 qSysMenu.menuName,qSysMenu.path,
                 qSysMenu.component,qSysMenu.query,
                 qSysMenu.visible,qSysMenu.status,
-                                Expressions.asString(qSysMenu.perms.coalesce("")),qSysMenu.isFrame,
+                                qSysMenu.perms,qSysMenu.isFrame,
                 qSysMenu.isCache,qSysMenu.menuType,
                 qSysMenu.icon,qSysMenu.orderNum,qSysMenu.createTime)
         ).from(qSysMenu)
@@ -200,6 +201,8 @@ public class SysMenuRepositoryImpl extends BaseRepositoryImpl<SysMenu,Long> impl
                 .notEmptySet(menu.getPerms(),qSysMenu.perms)
                 .notEmptySet(menu.getIcon(),qSysMenu.icon)
                 .notEmptySet(menu.getRemark(),qSysMenu.remark)
-                .notEmptySet(menu.getUpdateBy(),qSysMenu.updateBy).build(qSysMenu.menuId.eq(menu.getMenuId())).execute();
+                .notEmptySet(menu.getUpdateBy(),qSysMenu.updateBy)
+                .notEmptySet(new Date(),qSysMenu.updateTime)
+                .build(qSysMenu.menuId.eq(menu.getMenuId())).execute();
     }
 }

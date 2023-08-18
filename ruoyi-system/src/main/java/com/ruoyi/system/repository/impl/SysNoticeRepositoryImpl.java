@@ -13,6 +13,7 @@ import com.ruoyi.system.repository.SysNoticeRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 @Repository
 public class SysNoticeRepositoryImpl extends BaseRepositoryImpl<SysNotice,Long> implements SysNoticeRepository {
@@ -51,6 +52,7 @@ public class SysNoticeRepositoryImpl extends BaseRepositoryImpl<SysNotice,Long> 
                 .notEmptySet(notice.getNoticeContent(),n.noticeContent)
                 .notEmptySet(notice.getStatus(),n.status)
                 .notEmptySet(notice.getUpdateBy(),n.updateBy)
+                .notEmptySet(new Date(),n.updateTime)
                 .build(n.noticeId.eq(notice.getNoticeId())).execute();
     }
 }

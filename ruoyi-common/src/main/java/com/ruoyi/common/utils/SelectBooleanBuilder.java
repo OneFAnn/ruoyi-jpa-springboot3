@@ -6,7 +6,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.DateTimePath;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.StringPath;
-import org.springframework.security.config.Customizer;
+import com.querydsl.jpa.JPQLQuery;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public  class SelectBooleanBuilder{
@@ -37,6 +35,12 @@ public  class SelectBooleanBuilder{
     }
 
 
+    public SelectBooleanBuilder notEmptyOrIn(Long param, NumberPath numberPath, JPQLQuery<Long> ins ){
+        if(param!=null){
+            booleanBuilder.or(numberPath.in(ins));
+        }
+        return this;
+    }
 
     public SelectBooleanBuilder notEmptyLike(String param, StringPath stringPath){
         if(StringUtils.hasText(param)){

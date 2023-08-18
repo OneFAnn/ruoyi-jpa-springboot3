@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,9 @@ public class SysRoleRepositoryImpl extends BaseRepositoryImpl<SysRole,Long> impl
                 .notEmptySet(role.isDeptCheckStrictly(), r.deptCheckStrictly)
                 .notEmptySet(role.getStatus(), r.status)
                 .notEmptySet(role.getRemark(), r.remark)
-                .notEmptySet(role.getUpdateBy(), r.updateBy).build(r.roleId.eq(role.getRoleId())).execute();
+                .notEmptySet(role.getUpdateBy(), r.updateBy)
+                .notEmptySet(new Date(),r.updateTime)
+                .build(r.roleId.eq(role.getRoleId())).execute();
     }
 
     @Override

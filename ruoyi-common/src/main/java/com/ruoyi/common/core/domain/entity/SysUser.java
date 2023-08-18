@@ -13,6 +13,7 @@ import com.ruoyi.common.annotation.Excel.Type;
 import com.ruoyi.common.annotation.Excels;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.xss.Xss;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -56,6 +57,7 @@ public class SysUser extends BaseEntity
 
     /** 用户性别 */
     @Excel(name = "用户性别", readConverterExp = "0=男,1=女,2=未知")
+    @ColumnDefault("'2'")
     private String sex;
 
     /** 用户头像 */
@@ -66,9 +68,11 @@ public class SysUser extends BaseEntity
 
     /** 帐号状态（0正常 1停用） */
     @Excel(name = "帐号状态", readConverterExp = "0=正常,1=停用")
+    @ColumnDefault("'0'")
     private String status;
 
     /** 删除标志（0代表存在 2代表删除） */
+    @ColumnDefault("'0'")
     private String delFlag;
 
     /** 最后登录IP */

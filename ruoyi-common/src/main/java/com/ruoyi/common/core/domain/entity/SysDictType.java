@@ -1,9 +1,6 @@
 package com.ruoyi.common.core.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -12,6 +9,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -31,18 +30,26 @@ public class SysDictType extends BaseEntity
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Excel(name = "字典主键", cellType = ColumnType.NUMERIC)
+    @Comment("字典主键")
     private Long dictId;
 
     /** 字典名称 */
     @Excel(name = "字典名称")
+    @Comment("字典名称")
+    @Column(length = 100)
     private String dictName;
 
     /** 字典类型 */
     @Excel(name = "字典类型")
+    @Comment("字典类型")
+    @Column(length = 100)
     private String dictType;
 
     /** 状态（0正常 1停用） */
     @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
+    @Comment("状态")
+    @Column(length = 1)
+    @ColumnDefault("'0'")
     private String status;
 
     public Long getDictId()

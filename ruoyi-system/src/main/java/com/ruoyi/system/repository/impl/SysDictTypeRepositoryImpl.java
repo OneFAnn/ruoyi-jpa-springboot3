@@ -14,6 +14,7 @@ import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -49,6 +50,7 @@ public class SysDictTypeRepositoryImpl extends BaseRepositoryImpl<SysDictType,Lo
                 .notEmptySet(dictType.getStatus(),qSysDictType.status)
                 .notEmptySet(dictType.getRemark(),qSysDictType.remark)
                 .notEmptySet(dictType.getUpdateBy(),qSysDictType.updateBy)
+                .notEmptySet(new Date(),qSysDictType.updateTime)
                 .build(qSysDictType.dictId.eq(dictType.getDictId())).execute();
     }
 

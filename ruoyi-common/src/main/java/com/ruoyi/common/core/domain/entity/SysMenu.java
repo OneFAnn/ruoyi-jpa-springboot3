@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -31,15 +32,20 @@ public class SysMenu extends BaseEntity
     private Long menuId;
 
     /** 菜单名称 */
+    @Column(length = 50)
     private String menuName;
 
     /** 父菜单名称 */
     private String parentName;
 
     /** 父菜单ID */
+    @ColumnDefault("0")
+    @Column(length = 20)
     private Long parentId;
 
     /** 显示顺序 */
+    @ColumnDefault("0")
+    @Column(length = 4)
     private Integer orderNum;
 
     /** 路由地址 */
@@ -52,24 +58,35 @@ public class SysMenu extends BaseEntity
     private String query;
 
     /** 是否为外链（0是 1否） */
+    @ColumnDefault("'1'")
+    @Column(length = 1)
     private String isFrame;
 
     /** 是否缓存（0缓存 1不缓存） */
+    @ColumnDefault("'0'")
+    @Column(length = 1)
     private String isCache;
 
     /** 类型（M目录 C菜单 F按钮） */
+    @Column(length = 1)
+    @ColumnDefault("''")
     private String menuType;
 
     /** 显示状态（0显示 1隐藏） */
+    @ColumnDefault("'0'")
+    @Column(length = 1)
     private String visible;
     
     /** 菜单状态（0正常 1停用） */
+    @ColumnDefault("'0'")
+    @Column(length = 1)
     private String status;
 
     /** 权限字符串 */
     private String perms;
 
     /** 菜单图标 */
+    @ColumnDefault("'#'")
     private String icon;
 
     /** 子菜单 */

@@ -1,9 +1,6 @@
 package com.ruoyi.common.core.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,6 +9,8 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -31,36 +30,56 @@ public class SysDictData extends BaseEntity
     @Excel(name = "字典编码", cellType = ColumnType.NUMERIC)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Comment("字典编码")
     private Long dictCode;
 
     /** 字典排序 */
     @Excel(name = "字典排序", cellType = ColumnType.NUMERIC)
+    @Comment("字典排序")
+    @Column(length = 4)
+    @ColumnDefault("0")
     private Long dictSort;
 
     /** 字典标签 */
     @Excel(name = "字典标签")
+    @Comment("字典标签")
+    @Column(length = 100)
     private String dictLabel;
 
     /** 字典键值 */
     @Excel(name = "字典键值")
+    @Comment("字典键值")
+    @Column(length = 100)
     private String dictValue;
 
     /** 字典类型 */
     @Excel(name = "字典类型")
+    @Comment("字典类型")
+    @Column(length = 100)
     private String dictType;
 
     /** 样式属性（其他样式扩展） */
+    @Comment("样式属性（其他样式扩展")
+    @Column(length = 100)
     private String cssClass;
 
     /** 表格字典样式 */
+    @Comment("表格字典样式")
+    @Column(length = 100)
     private String listClass;
 
     /** 是否默认（Y是 N否） */
+    @Comment("是否默认（Y是 N否）")
     @Excel(name = "是否默认", readConverterExp = "Y=是,N=否")
+    @Column(length = 1)
+    @ColumnDefault("'N'")
     private String isDefault;
 
     /** 状态（0正常 1停用） */
+    @Comment("状态（0正常 1停用）")
     @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
+    @Column(length = 1)
+    @ColumnDefault("'0'")
     private String status;
 
     public Long getDictCode()

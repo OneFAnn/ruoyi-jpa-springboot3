@@ -5,6 +5,7 @@ import com.blazebit.persistence.querydsl.BlazeJPAQuery;
 import com.blazebit.persistence.querydsl.BlazeJPAQueryFactory;
 import com.querydsl.core.group.Group;
 import com.querydsl.core.group.GroupBy;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.ruoyi.common.core.BaseRepositoryImpl;
 import com.ruoyi.common.core.domain.entity.QSysDept;
@@ -34,6 +35,7 @@ public class SysUserRepositoryImpl extends BaseRepositoryImpl<SysUser,Long> impl
 
     @Override
     public List<SysUser> selectUserList(SysUser sysUser, PageDomain pageDomain) {
+        QSysDept sd = QSysDept.sysDept;
         BlazeJPAQuery<SysUser> jpaQuery = blazeJPAQueryFactory.selectFrom(u)
                 .where(
                         SelectBooleanBuilder.builder()
@@ -44,6 +46,9 @@ public class SysUserRepositoryImpl extends BaseRepositoryImpl<SysUser,Long> impl
                                 .notEmptyDateAfter((String) sysUser.getParams().get("beginTime"), u.createTime)
                                 .notEmptyDateBefter((String) sysUser.getParams().get("endTime"), u.createTime, () -> LocalTime.of(23, 59, 59))
                                 .notEmptyExpressions(sysUser.getParams())
+                                .notEmptyEq(sysUser.getDeptId(),u.deptId)
+                                .notEmptyOrIn(sysUser.getDeptId(),u.deptId
+                                        ,JPAExpressions.select(sd.deptId).from(sd).where(Expressions.booleanTemplate("function('FIND_IN_SET',{0},{1})>0",sysUser.getDeptId(),sd.ancestors)))
                                 .build()
                 ).orderBy(u.userId.asc());
 
@@ -187,7 +192,9 @@ public class SysUserRepositoryImpl extends BaseRepositoryImpl<SysUser,Long> impl
                 .notEmptySet(user.getStatus(), u.status)
                 .notEmptySet(user.getLoginIp(), u.loginIp)
                 .notEmptySet(user.getLoginDate(), u.loginDate)
-                .notEmptySet(user.getUpdateBy(), u.createBy)
-                .notEmptySet(user.getRemark(), u.remark).build(u.userId.eq(user.getUserId())).execute();
+                .notEmptySet(user.getUpdateBy(), u.updateBy)
+                .notEmptySet(user.getRemark(), u.remark)
+                .notEmptySet(new Date(),u.updateTime)
+                .build(u.userId.eq(user.getUserId())).execute();
     }
 }

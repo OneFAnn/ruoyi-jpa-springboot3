@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,6 +70,7 @@ public  class SysConfigRepositoryImpl extends BaseRepositoryImpl<SysConfig,Long>
                 .notEmptySet(config.getConfigType(),qSysConfig.configType)
                 .notEmptySet(config.getUpdateBy(),qSysConfig.updateBy)
                 .notEmptySet(config.getRemark(),qSysConfig.remark)
+                .notEmptySet(new Date(),qSysConfig.updateTime)
                 .build(qSysConfig.configId.eq(config.getConfigId())).execute();
     }
 }

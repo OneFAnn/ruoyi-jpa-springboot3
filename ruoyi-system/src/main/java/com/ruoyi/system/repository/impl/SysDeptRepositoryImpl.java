@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -136,7 +137,9 @@ public class SysDeptRepositoryImpl extends BaseRepositoryImpl<SysDept,Long> impl
                 .notEmptySet(dept.getPhone(), qSysDept.phone)
                 .notEmptySet(dept.getEmail(), qSysDept.email)
                 .notEmptySet(dept.getStatus(), qSysDept.status)
-                .notEmptySet(dept.getUpdateBy(), qSysDept.updateBy).build(qSysDept.deptId.eq(dept.getDeptId())).execute();
+                .notEmptySet(dept.getUpdateBy(), qSysDept.updateBy)
+                .notEmptySet(new Date(),qSysDept.updateTime)
+                .build(qSysDept.deptId.eq(dept.getDeptId())).execute();
 
     }
 

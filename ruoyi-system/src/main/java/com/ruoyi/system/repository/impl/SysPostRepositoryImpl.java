@@ -15,6 +15,7 @@ import com.ruoyi.system.repository.SysPostRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -47,7 +48,9 @@ public class SysPostRepositoryImpl extends BaseRepositoryImpl<SysPost,Long> impl
                 .notEmptySet(post.getPostSort(),p.postSort)
                 .notEmptySet(post.getStatus(),p.status)
                 .notEmptySet(post.getRemark(),p.remark)
-                .notEmptySet(post.getUpdateBy(),p.updateBy).build(p.postId.eq(post.getPostId())).execute();
+                .notEmptySet(post.getUpdateBy(),p.updateBy)
+                .notEmptySet(new Date(),p.updateTime)
+                .build(p.postId.eq(post.getPostId())).execute();
     }
 
     @Override

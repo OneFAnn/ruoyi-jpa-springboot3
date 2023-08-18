@@ -14,6 +14,7 @@ import com.ruoyi.system.repository.SysDictDataRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -85,6 +86,8 @@ public class SysDictDataRepositoryImpl extends BaseRepositoryImpl<SysDictData,Lo
                 .notEmptySet(dictData.getIsDefault(),qSysDictData.isDefault)
                 .notEmptySet(dictData.getStatus(),qSysDictData.status)
                 .notEmptySet(dictData.getRemark(),qSysDictData.remark)
-                .notEmptySet(dictData.getUpdateBy(),qSysDictData.updateBy).build(qSysDictData.dictCode.eq(dictData.getDictCode())).execute();
+                .notEmptySet(dictData.getUpdateBy(),qSysDictData.updateBy)
+                .notEmptySet(new Date(),qSysDictData.updateTime)
+                .build(qSysDictData.dictCode.eq(dictData.getDictCode())).execute();
     }
 }
