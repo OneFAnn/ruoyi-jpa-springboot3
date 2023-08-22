@@ -1,6 +1,7 @@
 
 
-### 若依升级到springboot3，mybatis替换为spring data jpa + querydsl
+## 若依升级到springboot3，mybatis替换为spring data jpa + querydsl+blaze-persistence分页查询
+druid数据库连接池（1.2.18）在springboot3下还未完全支持，sql监控功能暂不能用
 
 
 ## 平台简介
