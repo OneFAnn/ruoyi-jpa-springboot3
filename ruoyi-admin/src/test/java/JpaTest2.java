@@ -1,18 +1,19 @@
 import com.ruoyi.RuoYiApplication;
 import com.ruoyi.common.core.domain.entity.SysDept;
-import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.generator.domain.GenTable;
+import com.ruoyi.generator.domain.GenTableColumn;
+import com.ruoyi.generator.domain.views.Tables;
+import com.ruoyi.generator.repository.TablesViewRepository;
+import com.ruoyi.generator.repository.GenTableColumnRepository;
 import com.ruoyi.generator.repository.GenTableRepository;
-import com.ruoyi.system.domain.SysConfig;
 import com.ruoyi.system.domain.SysUserRole;
-import com.ruoyi.system.mapper.SysUserMapper;
 import com.ruoyi.system.repository.SysConfigRepository;
 import com.ruoyi.system.repository.SysDeptRepository;
-import com.ruoyi.system.repository.SysUserRepository;
 import com.ruoyi.system.repository.SysUserRoleRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,10 +29,11 @@ public class JpaTest2 {
 //        sysConfigRepository.findAll().forEach(sysConfig -> System.out.println(sysConfig));
 //        sysConfigRepository.findByConfigName("111");
         SysDept sysDept = new SysDept();
-//        sysDept.setDeptId(200l);
+        sysDept.setParentId(102l);
         sysDept.setOrderNum(1);
-        sysDept.setDeptName("886");
-        deptRepository.save(sysDept);
+        sysDept.setDeptName("822");
+        deptRepository.saveAndFlush(sysDept);
+//        int i = 1/0;
     }
     @Autowired
     private SysUserRoleRepository userRoleRepository;
@@ -42,14 +44,6 @@ public class JpaTest2 {
         ur.setUserId(200l);
         userRoleRepository.save(ur);
     }
-
-    @Autowired
-    private GenTableRepository genTableRepository;
-    @Test
-    void t3(){
-        genTableRepository.selectGenTableAll();
-    }
-
 
 
 }

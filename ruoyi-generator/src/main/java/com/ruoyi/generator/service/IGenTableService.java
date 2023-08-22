@@ -2,6 +2,8 @@ package com.ruoyi.generator.service;
 
 import java.util.List;
 import java.util.Map;
+
+import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.generator.domain.GenTable;
 
 /**
@@ -17,7 +19,7 @@ public interface IGenTableService
      * @param genTable 业务信息
      * @return 业务集合
      */
-    public List<GenTable> selectGenTableList(GenTable genTable);
+    public List<GenTable> selectGenTableList(GenTable genTable, PageDomain pageDomain);
 
     /**
      * 查询据库列表
@@ -25,7 +27,7 @@ public interface IGenTableService
      * @param genTable 业务信息
      * @return 数据库表集合
      */
-    public List<GenTable> selectDbTableList(GenTable genTable);
+    public List<?> selectDbTableList(GenTable genTable,PageDomain pageDomain);
 
     /**
      * 查询据库列表

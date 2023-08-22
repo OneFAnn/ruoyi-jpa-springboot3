@@ -24,7 +24,7 @@ public interface GenTableColumnRepository extends BaseRepository<GenTableColumn,
      */
     public List<GenTableColumn> selectGenTableColumnListByTableId(Long tableId);
 
-
+    public int updateGenTableColumn(GenTableColumn tableColumn);
 
     /**
      * 批量删除业务字段

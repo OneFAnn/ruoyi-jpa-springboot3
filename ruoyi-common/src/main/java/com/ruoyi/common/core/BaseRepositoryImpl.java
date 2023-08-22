@@ -8,6 +8,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.ruoyi.common.core.page.PageDomain;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import java.util.List;
@@ -35,8 +36,16 @@ public abstract class BaseRepositoryImpl<T,ID> extends SimpleJpaRepository<T,ID>
         em.detach(entity);
     }
 
+    public Query nativeQuery(String sql, Class clazz){
+        return em.createNativeQuery(sql, clazz);
+    }
+
+    public Query nativeQuery(String sql){
+        return em.createNativeQuery(sql);
+    }
+
     @Override
-    public Optional<List<T>> fetchPage(BlazeJPAQuery<T> jpaQuery,PageDomain pageDomain){
+    public <K> Optional<List<K>> fetchPage(BlazeJPAQuery<K> jpaQuery,PageDomain pageDomain){
         return Optional.ofNullable(pageDomain).map(page -> {
             Optional<OrderSpecifier> dslOrderBy = pageDomain.getDslOrderBy();
             dslOrderBy.map(orderSpecifier -> jpaQuery.orderBy(orderSpecifier));

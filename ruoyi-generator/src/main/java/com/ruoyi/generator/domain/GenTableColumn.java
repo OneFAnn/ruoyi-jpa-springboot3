@@ -1,9 +1,7 @@
 package com.ruoyi.generator.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.utils.StringUtils;
@@ -47,13 +45,13 @@ public class GenTableColumn extends BaseEntity
     private String javaField;
 
     /** 是否主键（1是） */
-    private String isPk;
+    private Character isPk;
 
     /** 是否自增（1是） */
-    private String isIncrement;
+    private Character isIncrement;
 
     /** 是否必填（1是） */
-    private String isRequired;
+    private Character isRequired;
 
     /** 是否为插入字段（1是） */
     private String isInsert;
@@ -154,12 +152,12 @@ public class GenTableColumn extends BaseEntity
         return StringUtils.capitalize(javaField);
     }
 
-    public void setIsPk(String isPk)
+    public void setIsPk(Character isPk)
     {
         this.isPk = isPk;
     }
 
-    public String getIsPk()
+    public Character getIsPk()
     {
         return isPk;
     }
@@ -169,17 +167,17 @@ public class GenTableColumn extends BaseEntity
         return isPk(this.isPk);
     }
 
-    public boolean isPk(String isPk)
+    public boolean isPk(Character isPk)
     {
-        return isPk != null && StringUtils.equals("1", isPk);
+        return isPk != null && StringUtils.equals("1", isPk.toString());
     }
 
-    public String getIsIncrement()
+    public Character getIsIncrement()
     {
         return isIncrement;
     }
 
-    public void setIsIncrement(String isIncrement)
+    public void setIsIncrement(Character isIncrement)
     {
         this.isIncrement = isIncrement;
     }
@@ -189,17 +187,17 @@ public class GenTableColumn extends BaseEntity
         return isIncrement(this.isIncrement);
     }
 
-    public boolean isIncrement(String isIncrement)
+    public boolean isIncrement(Character isIncrement)
     {
-        return isIncrement != null && StringUtils.equals("1", isIncrement);
+        return isIncrement != null && StringUtils.equals("1", isIncrement.toString());
     }
 
-    public void setIsRequired(String isRequired)
+    public void setIsRequired(Character isRequired)
     {
         this.isRequired = isRequired;
     }
 
-    public String getIsRequired()
+    public Character getIsRequired()
     {
         return isRequired;
     }
@@ -209,9 +207,9 @@ public class GenTableColumn extends BaseEntity
         return isRequired(this.isRequired);
     }
 
-    public boolean isRequired(String isRequired)
+    public boolean isRequired(Character isRequired)
     {
-        return isRequired != null && StringUtils.equals("1", isRequired);
+        return isRequired != null && StringUtils.equals("1", isRequired.toString());
     }
 
     public void setIsInsert(String isInsert)

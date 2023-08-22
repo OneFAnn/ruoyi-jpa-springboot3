@@ -5,15 +5,12 @@ import java.util.List;
 import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.system.repository.SysPostRepository;
 import com.ruoyi.system.repository.SysUserPostRepository;
-import jakarta.persistence.Transient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysPost;
-import com.ruoyi.system.mapper.SysPostMapper;
-import com.ruoyi.system.mapper.SysUserPostMapper;
 import com.ruoyi.system.service.ISysPostService;
 import org.springframework.transaction.annotation.Transactional;
 

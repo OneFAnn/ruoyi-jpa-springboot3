@@ -1,11 +1,12 @@
 package com.ruoyi.generator.service;
 
 import java.util.List;
+
+import com.ruoyi.generator.repository.GenTableColumnRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.generator.domain.GenTableColumn;
-import com.ruoyi.generator.mapper.GenTableColumnMapper;
 
 /**
  * 业务字段 服务层实现
@@ -16,7 +17,7 @@ import com.ruoyi.generator.mapper.GenTableColumnMapper;
 public class GenTableColumnServiceImpl implements IGenTableColumnService 
 {
 	@Autowired
-	private GenTableColumnMapper genTableColumnMapper;
+	private GenTableColumnRepository genTableColumnRepository;
 
 	/**
      * 查询业务字段列表
@@ -27,7 +28,7 @@ public class GenTableColumnServiceImpl implements IGenTableColumnService
 	@Override
 	public List<GenTableColumn> selectGenTableColumnListByTableId(Long tableId)
 	{
-	    return genTableColumnMapper.selectGenTableColumnListByTableId(tableId);
+	    return genTableColumnRepository.selectGenTableColumnListByTableId(tableId);
 	}
 	
     /**
@@ -39,7 +40,8 @@ public class GenTableColumnServiceImpl implements IGenTableColumnService
 	@Override
 	public int insertGenTableColumn(GenTableColumn genTableColumn)
 	{
-	    return genTableColumnMapper.insertGenTableColumn(genTableColumn);
+	     genTableColumnRepository.save(genTableColumn);
+		 return 1;
 	}
 	
 	/**
@@ -51,7 +53,7 @@ public class GenTableColumnServiceImpl implements IGenTableColumnService
 	@Override
 	public int updateGenTableColumn(GenTableColumn genTableColumn)
 	{
-	    return genTableColumnMapper.updateGenTableColumn(genTableColumn);
+	    return genTableColumnRepository.updateGenTableColumn(genTableColumn);
 	}
 
 	/**
@@ -63,6 +65,6 @@ public class GenTableColumnServiceImpl implements IGenTableColumnService
 	@Override
 	public int deleteGenTableColumnByIds(String ids)
 	{
-		return genTableColumnMapper.deleteGenTableColumnByIds(Convert.toLongArray(ids));
+		return genTableColumnRepository.deleteGenTableColumnByIds(Convert.toLongArray(ids));
 	}
 }

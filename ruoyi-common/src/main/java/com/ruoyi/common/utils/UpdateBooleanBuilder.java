@@ -27,6 +27,13 @@ public class UpdateBooleanBuilder {
         return this;
     }
 
+    public UpdateBooleanBuilder notEmptySet(Character param,ComparablePath comparablePath){
+        if (param!=null){
+            this.updateClause.set(comparablePath,param.toString());
+        }
+        return this;
+    }
+
     public UpdateBooleanBuilder notEmptySet(Long param, NumberPath numberPath){
         if (param!=null){
             this.updateClause.set(numberPath,param);

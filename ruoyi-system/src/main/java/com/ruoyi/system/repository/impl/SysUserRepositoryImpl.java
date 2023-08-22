@@ -46,8 +46,7 @@ public class SysUserRepositoryImpl extends BaseRepositoryImpl<SysUser,Long> impl
                                 .notEmptyDateAfter((String) sysUser.getParams().get("beginTime"), u.createTime)
                                 .notEmptyDateBefter((String) sysUser.getParams().get("endTime"), u.createTime, () -> LocalTime.of(23, 59, 59))
                                 .notEmptyExpressions(sysUser.getParams())
-                                .notEmptyEq(sysUser.getDeptId(),u.deptId)
-                                .notEmptyOrIn(sysUser.getDeptId(),u.deptId
+                                .notEmptyEqOrIn(sysUser.getDeptId(),u.deptId
                                         ,JPAExpressions.select(sd.deptId).from(sd).where(Expressions.booleanTemplate("function('FIND_IN_SET',{0},{1})>0",sysUser.getDeptId(),sd.ancestors)))
                                 .build()
                 ).orderBy(u.userId.asc());

@@ -8,7 +8,7 @@ import com.ruoyi.system.repository.SysLogininforRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.domain.SysLogininfor;
-import com.ruoyi.system.mapper.SysLogininforMapper;
+
 import com.ruoyi.system.service.ISysLogininforService;
 
 /**

@@ -3,7 +3,6 @@ package com.ruoyi.system.repository;
 import com.ruoyi.common.core.BaseRepository;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.page.PageDomain;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.List;
@@ -58,7 +57,7 @@ public interface SysUserRepository extends BaseRepository<SysUser,Long> {
      * @param avatar 头像地址
      * @return 结果
      */
-    public int updateUserAvatar(@Param("userName") String userName, @Param("avatar") String avatar);
+    public int updateUserAvatar( String userName,String avatar);
 
     /**
      * 重置用户密码
@@ -67,7 +66,7 @@ public interface SysUserRepository extends BaseRepository<SysUser,Long> {
      * @param password 密码
      * @return 结果
      */
-    public long resetUserPwd(@Param("userName") String userName, @Param("password") String password);
+    public long resetUserPwd(String userName,  String password);
 
     /**
      * 通过用户ID删除用户

@@ -3,25 +3,12 @@ package com.ruoyi.system.service.impl;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
+
 import java.util.stream.Collectors;
 
-import com.blazebit.persistence.querydsl.BlazeJPAQuery;
-import com.blazebit.persistence.querydsl.BlazeJPAQueryFactory;
-import com.querydsl.core.Tuple;
-import com.querydsl.core.dml.UpdateClause;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.JPAExpressions;
+
 import com.ruoyi.common.core.domain.entity.*;
-import com.ruoyi.common.core.page.PageDomain;
-import com.ruoyi.common.core.page.TableSupport;
-import com.ruoyi.common.utils.SelectBooleanBuilder;
-import com.ruoyi.system.domain.QSysRoleDept;
-import com.ruoyi.system.domain.SysRoleDept;
 import com.ruoyi.system.repository.SysDeptRepository;
-import com.ruoyi.system.repository.SysRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.annotation.DataScope;
@@ -32,9 +19,8 @@ import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
-import com.ruoyi.system.mapper.SysDeptMapper;
-import com.ruoyi.system.mapper.SysRoleMapper;
 import com.ruoyi.system.service.ISysDeptService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 部门管理 服务实现
@@ -232,6 +218,7 @@ public class SysDeptServiceImpl implements ISysDeptService
         }
         dept.setAncestors(info.getAncestors() + "," + dept.getParentId());
         deptRepository.saveAndFlush(dept);
+
         return 1;
     }
 

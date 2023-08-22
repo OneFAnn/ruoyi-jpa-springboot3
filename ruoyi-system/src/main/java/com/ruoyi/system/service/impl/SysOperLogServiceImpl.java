@@ -7,7 +7,7 @@ import com.ruoyi.system.repository.SysOperLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.domain.SysOperLog;
-import com.ruoyi.system.mapper.SysOperLogMapper;
+
 import com.ruoyi.system.service.ISysOperLogService;
 
 /**

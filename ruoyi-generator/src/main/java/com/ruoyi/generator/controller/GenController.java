@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.ruoyi.common.core.page.TableSupport;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +52,7 @@ public class GenController extends BaseController
     @GetMapping("/list")
     public TableDataInfo genList(GenTable genTable)
     {
-        startPage();
-        List<GenTable> list = genTableService.selectGenTableList(genTable);
+        List<GenTable> list = genTableService.selectGenTableList(genTable, TableSupport.getPageDomain());
         return getDataTable(list);
     }
 
@@ -79,8 +80,7 @@ public class GenController extends BaseController
     @GetMapping("/db/list")
     public TableDataInfo dataList(GenTable genTable)
     {
-        startPage();
-        List<GenTable> list = genTableService.selectDbTableList(genTable);
+        List<?> list = genTableService.selectDbTableList(genTable,TableSupport.getPageDomain());
         return getDataTable(list);
     }
 

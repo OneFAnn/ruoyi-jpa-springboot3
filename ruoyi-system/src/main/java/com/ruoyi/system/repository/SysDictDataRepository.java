@@ -3,7 +3,6 @@ package com.ruoyi.system.repository;
 import com.ruoyi.common.core.BaseRepository;
 import com.ruoyi.common.core.domain.entity.SysDictData;
 import com.ruoyi.common.core.page.PageDomain;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.List;
@@ -33,7 +32,7 @@ public interface SysDictDataRepository extends BaseRepository<SysDictData,Long> 
      * @param dictValue 字典键值
      * @return 字典标签
      */
-    public String selectDictLabel(@Param("dictType") String dictType, @Param("dictValue") String dictValue);
+    public String selectDictLabel(String dictType, String dictValue);
 
 
 

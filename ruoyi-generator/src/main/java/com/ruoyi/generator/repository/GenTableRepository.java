@@ -23,7 +23,7 @@ public interface GenTableRepository extends BaseRepository<GenTable,Long> {
      * @param genTable 业务信息
      * @return 数据库表集合
      */
-    public List<GenTable> selectDbTableList(GenTable genTable);
+    public List<?> selectDbTableList(GenTable genTable,PageDomain pageDomain);
 
     /**
      * 查询据库列表
@@ -57,7 +57,7 @@ public interface GenTableRepository extends BaseRepository<GenTable,Long> {
     public GenTable selectGenTableByName(String tableName);
 
 
-
+    public int updateGenTable(GenTable genTable);
 
     /**
      * 批量删除业务

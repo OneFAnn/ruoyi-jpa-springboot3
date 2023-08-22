@@ -35,9 +35,9 @@ public  class SelectBooleanBuilder{
     }
 
 
-    public SelectBooleanBuilder notEmptyOrIn(Long param, NumberPath numberPath, JPQLQuery<Long> ins ){
+    public SelectBooleanBuilder notEmptyEqOrIn(Long param, NumberPath numberPath, JPQLQuery<Long> ins ){
         if(param!=null){
-            booleanBuilder.or(numberPath.in(ins));
+            booleanBuilder.and(numberPath.eq(param).or(numberPath.in(ins)));
         }
         return this;
     }
@@ -49,12 +49,28 @@ public  class SelectBooleanBuilder{
         return this;
     }
 
+    public SelectBooleanBuilder notEmptyNotLike(String param, StringPath stringPath){
+        if(StringUtils.hasText(param)){
+            booleanBuilder.and(stringPath.notLike("%"+param+"%"));
+        }
+        return this;
+    }
+
+
     public SelectBooleanBuilder notEmptyIn(Integer[] param, NumberPath numberPath){
         if(param!=null && param.length>0){
             booleanBuilder.and(numberPath.in(param));
         }
         return this;
     }
+
+    public SelectBooleanBuilder notEmptyIn(String[] params, StringPath path){
+        if(params!=null && params.length>0){
+            booleanBuilder.and(path.in(params));
+        }
+        return this;
+    }
+
 
     public SelectBooleanBuilder notEmptyExpressions(BooleanExpression booleanExpression){
         if(booleanExpression!=null){

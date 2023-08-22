@@ -1,6 +1,8 @@
 package com.ruoyi.generator.repository.impl;
 
 import com.blazebit.persistence.CriteriaBuilderFactory;
+import com.blazebit.persistence.PagedArrayList;
+import com.blazebit.persistence.PagedList;
 import com.blazebit.persistence.querydsl.BlazeJPAQuery;
 import com.blazebit.persistence.querydsl.BlazeJPAQueryFactory;
 import com.querydsl.core.group.Group;
@@ -8,25 +10,31 @@ import com.querydsl.core.group.GroupBy;
 import com.ruoyi.common.core.BaseRepositoryImpl;
 import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.common.utils.SelectBooleanBuilder;
+import com.ruoyi.common.utils.UpdateBooleanBuilder;
 import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
 import com.ruoyi.generator.domain.QGenTable;
 import com.ruoyi.generator.domain.QGenTableColumn;
+import com.ruoyi.generator.domain.views.Tables;
 import com.ruoyi.generator.repository.GenTableRepository;
+import com.ruoyi.generator.repository.TablesViewRepository;
 import jakarta.persistence.EntityManager;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class GenTableRepositoryImpl extends BaseRepositoryImpl<GenTable,Long> implements GenTableRepository {
     public GenTableRepositoryImpl(EntityManager em, BlazeJPAQueryFactory factory) {
         super(GenTable.class, em, factory);
     }
+
+    @Autowired
+    private TablesViewRepository tablesViewRepository;
     final QGenTable t = QGenTable.genTable;
     final QGenTableColumn c = QGenTableColumn.genTableColumn;
 
@@ -47,13 +55,17 @@ public class GenTableRepositoryImpl extends BaseRepositoryImpl<GenTable,Long> im
     }
 
     @Override
-    public List<GenTable> selectDbTableList(GenTable genTable) {
-        return null;
+    public List<GenTable> selectDbTableList(GenTable genTable,PageDomain pageDomain) {
+        return tablesViewRepository.selectDbTableList(genTable, pageDomain);
     }
 
     @Override
     public List<GenTable> selectDbTableListByNames(String[] tableNames) {
-        return null;
+        return tablesViewRepository.selectDbTableListByNames(tableNames).stream().map(table->{
+            GenTable genTable = new GenTable();
+            BeanUtils.copyProperties(table,genTable);
+            return genTable;
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -95,13 +107,36 @@ public class GenTableRepositoryImpl extends BaseRepositoryImpl<GenTable,Long> im
                 .where(t.tableName.eq(tableName))
                 .orderBy(c.sort.asc())
                 .transform(GroupBy.groupBy(t.tableId).as(t, GroupBy.list(c)));
-        Optional<GenTable> reuslt = Optional.empty();
-        transform.forEach((k,group)->{
+         return transform.values().stream().findFirst().map(group -> {
             GenTable genTable = group.getOne(t);
             genTable.setColumns(group.getList(c));
-            reuslt.orElse(genTable);
-        });
-        return reuslt.get();
+            return genTable;
+        }).get();
+    }
+
+    @Override
+    public int updateGenTable(GenTable genTable) {
+        return (int) UpdateBooleanBuilder.builder(blazeJPAQueryFactory.update(t))
+                .notEmptySet(genTable.getTableName(), t.tableName)
+                .notEmptySet(genTable.getTableComment(), t.tableComment)
+                .notEmptySet(genTable.getSubTableName(), t.subTableName)
+                .notEmptySet(genTable.getSubTableFkName(), t.subTableFkName)
+                .notEmptySet(genTable.getClassName(), t.className)
+                .notEmptySet(genTable.getFunctionAuthor(), t.functionAuthor)
+                .notEmptySet(genTable.getGenType(), t.genType)
+                .notEmptySet(genTable.getGenPath(), t.genPath)
+                .notEmptySet(genTable.getTplCategory(), t.tplCategory)
+                .notEmptySet(genTable.getPackageName(), t.packageName)
+                .notEmptySet(genTable.getModuleName(), t.moduleName)
+                .notEmptySet(genTable.getBusinessName(), t.businessName)
+                .notEmptySet(genTable.getFunctionName(), t.functionName)
+                .notEmptySet(genTable.getOptions(), t.options)
+                .notEmptySet(genTable.getUpdateBy(), t.updateBy)
+                .notEmptySet(genTable.getRemark(), t.remark)
+                .notEmptySet(new Date(), t.updateTime)
+                .build(
+                        t.tableId.eq(genTable.getTableId())
+                ).execute();
     }
 
     @Override
