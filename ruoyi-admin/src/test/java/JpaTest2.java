@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest(classes = RuoYiApplication.class)
 public class JpaTest2 {
@@ -39,10 +40,7 @@ public class JpaTest2 {
     private SysUserRoleRepository userRoleRepository;
     @Test
     void t2(){
-        SysUserRole ur = new SysUserRole();
-        ur.setRoleId(100l);
-        ur.setUserId(200l);
-        userRoleRepository.save(ur);
+        System.out.println(Optional.empty().orElse(null));
     }
 
 

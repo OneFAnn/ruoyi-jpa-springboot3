@@ -111,7 +111,7 @@ public class GenTableRepositoryImpl extends BaseRepositoryImpl<GenTable,Long> im
             GenTable genTable = group.getOne(t);
             genTable.setColumns(group.getList(c));
             return genTable;
-        }).get();
+        }).orElse(null);
     }
 
     @Override

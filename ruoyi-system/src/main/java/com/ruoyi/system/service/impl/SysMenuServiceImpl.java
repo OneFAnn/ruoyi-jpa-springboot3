@@ -156,7 +156,7 @@ public class SysMenuServiceImpl implements ISysMenuService
     @Override
     public List<Long> selectMenuListByRoleId(Long roleId)
     {
-        SysRole role = roleRepository.findById(roleId).get();
+        SysRole role = roleRepository.findById(roleId).orElse(null);
         return menuRepository.selectMenuListByRoleId(roleId, role.isMenuCheckStrictly());
     }
 

@@ -58,7 +58,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     @Override
     public SysDictData selectDictDataById(Long dictCode)
     {
-        return dictDataRepository.findById(dictCode).get();
+        return dictDataRepository.findById(dictCode).orElse(null);
     }
 
     /**

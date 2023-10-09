@@ -66,7 +66,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService
     @Override
     public SysOperLog selectOperLogById(Long operId)
     {
-        return operLogRepository.findById(operId).get();
+        return operLogRepository.findById(operId).orElse(null);
     }
 
     /**

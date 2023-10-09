@@ -145,8 +145,8 @@ public class SysConfigServiceImpl implements ISysConfigService
     @Override
     public int updateConfig(SysConfig config)
     {
-        SysConfig temp = sysConfigRepository.findById(config.getConfigId()).get();
-        if (!StringUtils.equals(temp.getConfigKey(), config.getConfigKey()))
+        SysConfig temp = sysConfigRepository.findById(config.getConfigId()).orElse(null);
+        if (temp!=null && !StringUtils.equals(temp.getConfigKey(), config.getConfigKey()))
         {
             redisCache.deleteObject(getCacheKey(temp.getConfigKey()));
         }

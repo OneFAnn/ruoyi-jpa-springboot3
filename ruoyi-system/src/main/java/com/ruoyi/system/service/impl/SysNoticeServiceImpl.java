@@ -30,7 +30,7 @@ public class SysNoticeServiceImpl implements ISysNoticeService
     @Override
     public SysNotice selectNoticeById(Long noticeId)
     {
-        return noticeRepository.findById(noticeId).get();
+        return noticeRepository.findById(noticeId).orElse(null);
     }
 
     /**

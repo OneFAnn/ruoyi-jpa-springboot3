@@ -42,7 +42,7 @@ public class SysJobLogServiceImpl implements ISysJobLogService
     @Override
     public SysJobLog selectJobLogById(Long jobLogId)
     {
-        return jobLogRepository.findById(jobLogId).get();
+        return jobLogRepository.findById(jobLogId).orElse(null);
     }
 
     /**

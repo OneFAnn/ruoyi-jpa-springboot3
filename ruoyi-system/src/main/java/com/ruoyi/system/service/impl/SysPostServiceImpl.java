@@ -60,7 +60,7 @@ public class SysPostServiceImpl implements ISysPostService
     @Override
     public SysPost selectPostById(Long postId)
     {
-        return postRepository.findById(postId).get();
+        return postRepository.findById(postId).orElse(null);
     }
 
     /**

@@ -69,7 +69,7 @@ public class SysJobServiceImpl implements ISysJobService
     @Override
     public SysJob selectJobById(Long jobId)
     {
-        return jobRepository.findById(jobId).get();
+        return jobRepository.findById(jobId).orElse(null);
     }
 
     /**
@@ -135,7 +135,7 @@ public class SysJobServiceImpl implements ISysJobService
     {
         for (Long jobId : jobIds)
         {
-            SysJob job = jobRepository.findById(jobId).get();
+            SysJob job = jobRepository.findById(jobId).orElse(null);
             deleteJob(job);
         }
     }

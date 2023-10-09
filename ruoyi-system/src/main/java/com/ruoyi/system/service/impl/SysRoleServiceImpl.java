@@ -137,7 +137,7 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Override
     public SysRole selectRoleById(Long roleId)
     {
-        return roleRepository.findById(roleId).get();
+        return roleRepository.findById(roleId).orElse(null);
     }
 
     /**

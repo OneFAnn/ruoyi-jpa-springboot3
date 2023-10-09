@@ -100,7 +100,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Override
     public SysDictType selectDictTypeById(Long dictId)
     {
-        return dictTypeRepository.findById(dictId).get();
+        return dictTypeRepository.findById(dictId).orElse(null);
     }
 
     /**
