@@ -12,10 +12,12 @@ import com.ruoyi.system.domain.SysNotice;
 import com.ruoyi.system.repository.SysNoticeRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 @Repository
+@Transactional
 public class SysNoticeRepositoryImpl extends BaseRepositoryImpl<SysNotice,Long> implements SysNoticeRepository {
     public SysNoticeRepositoryImpl(EntityManager em, BlazeJPAQueryFactory factory) {
         super(SysNotice.class, em, factory);

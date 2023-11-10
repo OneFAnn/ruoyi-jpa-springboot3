@@ -28,7 +28,8 @@ public class SysMenu extends BaseEntity
 
     /** 菜单ID */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO,generator = "sys_menu_seq")
+    @SequenceGenerator(name = "sys_menu_seq",initialValue = 2000)
     private Long menuId;
 
     /** 菜单名称 */

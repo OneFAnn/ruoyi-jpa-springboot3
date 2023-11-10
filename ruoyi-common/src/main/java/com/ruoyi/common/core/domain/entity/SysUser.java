@@ -31,7 +31,8 @@ public class SysUser extends BaseEntity
 
     /** 用户ID */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO,generator = "sys_user_seq")
+    @SequenceGenerator(name = "sys_user_seq",initialValue = 1000)
     @Excel(name = "用户序号", cellType = ColumnType.NUMERIC, prompt = "用户编号")
     private Long userId;
 

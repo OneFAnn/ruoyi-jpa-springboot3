@@ -19,11 +19,13 @@ import com.ruoyi.system.domain.QSysUserRole;
 import com.ruoyi.system.repository.SysUserRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 import java.util.*;
 
 @Repository
+@Transactional
 public class SysUserRepositoryImpl extends BaseRepositoryImpl<SysUser,Long> implements SysUserRepository {
     public SysUserRepositoryImpl(EntityManager em, BlazeJPAQueryFactory factory) {
         super(SysUser.class, em, factory);

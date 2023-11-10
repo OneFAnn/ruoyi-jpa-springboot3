@@ -28,7 +28,8 @@ public class SysDictType extends BaseEntity
 
     /** 字典主键 */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO,generator = "sys_dict_type_seq")
+    @SequenceGenerator(name = "sys_dict_type_seq",initialValue = 1000)
     @Excel(name = "字典主键", cellType = ColumnType.NUMERIC)
     @Comment("字典主键")
     private Long dictId;

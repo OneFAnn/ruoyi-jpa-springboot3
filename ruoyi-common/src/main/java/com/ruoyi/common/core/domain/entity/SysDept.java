@@ -27,7 +27,8 @@ public class SysDept extends BaseEntity
 
     /** 部门ID */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO,generator = "sys_dept_seq")
+    @SequenceGenerator(name = "sys_dept_seq",initialValue = 1000)
     @Comment("部门id")
     private Long deptId;
 

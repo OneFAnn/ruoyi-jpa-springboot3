@@ -10,8 +10,10 @@ import com.ruoyi.system.domain.idclazz.SysRoleMenuId;
 import com.ruoyi.system.repository.SysRoleMenuRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional
 public class SysRoleMenuRepositoryImpl extends BaseRepositoryImpl<SysRoleMenu, SysRoleMenuId> implements SysRoleMenuRepository {
     public SysRoleMenuRepositoryImpl(EntityManager em, BlazeJPAQueryFactory factory) {
         super(SysRoleMenu.class, em, factory);

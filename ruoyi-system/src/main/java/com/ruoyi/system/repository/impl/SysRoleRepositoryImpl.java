@@ -12,6 +12,7 @@ import com.ruoyi.system.domain.QSysUserRole;
 import com.ruoyi.system.repository.SysRoleRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
+@Transactional
 public class SysRoleRepositoryImpl extends BaseRepositoryImpl<SysRole,Long> implements SysRoleRepository {
     public SysRoleRepositoryImpl(EntityManager em, BlazeJPAQueryFactory factory) {
         super(SysRole.class, em, factory);

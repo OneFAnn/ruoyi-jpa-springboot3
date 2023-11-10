@@ -9,10 +9,12 @@ import com.ruoyi.system.domain.idclazz.SysRoleDeptId;
 import com.ruoyi.system.repository.SysRoleDeptRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
+@Transactional
 public class SysRoleDeptRepositoryImpl extends BaseRepositoryImpl<SysRoleDept, SysRoleDeptId> implements SysRoleDeptRepository {
     public SysRoleDeptRepositoryImpl( EntityManager em, BlazeJPAQueryFactory factory) {
         super(SysRoleDept.class, em, factory);

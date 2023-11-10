@@ -11,10 +11,12 @@ import com.ruoyi.system.domain.SysOperLog;
 import com.ruoyi.system.repository.SysOperLogRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 import java.util.List;
 @Repository
+@Transactional
 public class SysOperLogRepositoryImpl extends BaseRepositoryImpl<SysOperLog,Long> implements SysOperLogRepository {
     public SysOperLogRepositoryImpl(EntityManager em, BlazeJPAQueryFactory factory) {
         super(SysOperLog.class, em, factory);

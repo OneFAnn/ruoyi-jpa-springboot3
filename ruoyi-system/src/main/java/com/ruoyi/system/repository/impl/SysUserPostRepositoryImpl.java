@@ -9,8 +9,10 @@ import com.ruoyi.system.domain.idclazz.SysUserPostId;
 import com.ruoyi.system.repository.SysUserPostRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional
 public class SysUserPostRepositoryImpl extends BaseRepositoryImpl<SysUserPost, SysUserPostId> implements SysUserPostRepository {
     public SysUserPostRepositoryImpl(EntityManager em, BlazeJPAQueryFactory factory) {
         super(SysUserPost.class, em, factory);

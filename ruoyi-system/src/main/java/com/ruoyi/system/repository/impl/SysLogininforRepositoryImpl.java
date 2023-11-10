@@ -11,11 +11,13 @@ import com.ruoyi.system.domain.SysLogininfor;
 import com.ruoyi.system.repository.SysLogininforRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 import java.util.List;
 
 @Repository
+@Transactional
 public class SysLogininforRepositoryImpl extends BaseRepositoryImpl<SysLogininfor,Long> implements SysLogininforRepository {
 
     final QSysLogininfor qSysLogininfor = QSysLogininfor.sysLogininfor;

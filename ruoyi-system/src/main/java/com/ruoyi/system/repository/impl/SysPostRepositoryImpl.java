@@ -14,11 +14,13 @@ import com.ruoyi.system.domain.SysPost;
 import com.ruoyi.system.repository.SysPostRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 
 @Repository
+@Transactional
 public class SysPostRepositoryImpl extends BaseRepositoryImpl<SysPost,Long> implements SysPostRepository {
     public SysPostRepositoryImpl(EntityManager em, BlazeJPAQueryFactory factory) {
         super(SysPost.class, em, factory);

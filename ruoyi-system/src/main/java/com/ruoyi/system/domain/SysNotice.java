@@ -1,9 +1,6 @@
 package com.ruoyi.system.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -27,7 +24,8 @@ public class SysNotice extends BaseEntity
 
     /** 公告ID */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO,generator = "sys_notice_seq")
+    @SequenceGenerator(name = "sys_notice_seq",initialValue = 1000)
     private Long noticeId;
 
     /** 公告标题 */

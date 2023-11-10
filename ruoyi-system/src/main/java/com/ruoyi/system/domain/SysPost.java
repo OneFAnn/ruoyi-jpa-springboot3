@@ -26,7 +26,8 @@ public class SysPost extends BaseEntity
 
     /** 岗位序号 */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO,generator = "sys_post_seq")
+    @SequenceGenerator(name = "sys_post_seq",initialValue = 1000)
     @Excel(name = "岗位序号", cellType = ColumnType.NUMERIC)
     private Long postId;
 

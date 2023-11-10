@@ -21,11 +21,13 @@ import com.ruoyi.system.domain.QSysUserRole;
 import com.ruoyi.system.repository.SysMenuRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 
 @Repository
+@Transactional
 public class SysMenuRepositoryImpl extends BaseRepositoryImpl<SysMenu,Long> implements SysMenuRepository {
     public SysMenuRepositoryImpl(EntityManager em, BlazeJPAQueryFactory factory) {
         super(SysMenu.class, em, factory);

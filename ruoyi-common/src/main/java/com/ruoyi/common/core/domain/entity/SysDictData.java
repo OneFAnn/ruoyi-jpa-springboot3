@@ -29,7 +29,8 @@ public class SysDictData extends BaseEntity
     /** 字典编码 */
     @Excel(name = "字典编码", cellType = ColumnType.NUMERIC)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO,generator = "sys_dict_data_seq")
+    @SequenceGenerator(name = "sys_dict_data_seq",initialValue = 1000)
     @Comment("字典编码")
     private Long dictCode;
 

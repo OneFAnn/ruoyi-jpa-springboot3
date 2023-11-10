@@ -12,12 +12,14 @@ import com.ruoyi.common.utils.UpdateBooleanBuilder;
 import com.ruoyi.system.repository.SysDictTypeRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
 @Repository
+@Transactional
 public class SysDictTypeRepositoryImpl extends BaseRepositoryImpl<SysDictType,Long> implements SysDictTypeRepository {
 
     final QSysDictType qSysDictType = QSysDictType.sysDictType;

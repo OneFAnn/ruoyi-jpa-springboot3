@@ -9,11 +9,13 @@ import com.ruoyi.system.domain.idclazz.SysUserRoleId;
 import com.ruoyi.system.repository.SysUserRoleRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Repository
+@Transactional
 public class SysUserRoleRepositoryImpl extends BaseRepositoryImpl<SysUserRole, SysUserRoleId> implements SysUserRoleRepository {
     public SysUserRoleRepositoryImpl( EntityManager em, BlazeJPAQueryFactory factory) {
         super(SysUserRole.class, em, factory);

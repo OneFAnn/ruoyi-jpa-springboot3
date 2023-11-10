@@ -15,6 +15,7 @@ import com.ruoyi.system.domain.SysConfig;
 import com.ruoyi.system.repository.SysConfigRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalTime;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Transactional
 public  class SysConfigRepositoryImpl extends BaseRepositoryImpl<SysConfig,Long> implements SysConfigRepository {
 
     final QSysConfig qSysConfig = QSysConfig.sysConfig;

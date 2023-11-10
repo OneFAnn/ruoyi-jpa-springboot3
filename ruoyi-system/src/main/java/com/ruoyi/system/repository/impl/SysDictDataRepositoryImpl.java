@@ -13,11 +13,13 @@ import com.ruoyi.common.utils.UpdateBooleanBuilder;
 import com.ruoyi.system.repository.SysDictDataRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 
 @Repository
+@Transactional
 public class SysDictDataRepositoryImpl extends BaseRepositoryImpl<SysDictData,Long> implements SysDictDataRepository {
 
     final QSysDictData qSysDictData = QSysDictData.sysDictData;

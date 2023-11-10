@@ -29,7 +29,8 @@ public class SysRole extends BaseEntity
 
     /** 角色ID */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO,generator = "sys_role_seq")
+    @SequenceGenerator(name = "sys_role_seq",initialValue = 1000)
     @Excel(name = "角色序号", cellType = ColumnType.NUMERIC)
     private Long roleId;
 

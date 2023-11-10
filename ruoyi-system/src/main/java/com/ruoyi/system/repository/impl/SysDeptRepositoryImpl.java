@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Transactional
 public class SysDeptRepositoryImpl extends BaseRepositoryImpl<SysDept,Long> implements SysDeptRepository {
     public SysDeptRepositoryImpl( EntityManager em, BlazeJPAQueryFactory factory) {
         super(SysDept.class, em, factory);
