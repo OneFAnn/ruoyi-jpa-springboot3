@@ -22,6 +22,8 @@ import com.ruoyi.framework.security.handle.AuthenticationEntryPointImpl;
 import com.ruoyi.framework.security.handle.LogoutSuccessHandlerImpl;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+
 /**
  * spring security配置
  * 
@@ -100,29 +102,31 @@ public class SecurityConfig
 
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/login", "/register", "/captchaImage").anonymous()
+                        .requestMatchers(antMatcher("/login"), antMatcher("/register"), antMatcher("/captchaImage")).anonymous()
                         .requestMatchers(
-                                HttpMethod.GET,
-                                "/",
-                                "/*.html",
-                                "/*/*.html",
-                                "/*/*.css",
-                                "/*/*.js",
-                                "/profile/*").permitAll()
+                                antMatcher("/"),
+                                antMatcher("/*.html"),
+                                antMatcher("/*/*.html"),
+                                antMatcher("/*/*.css"),
+                                antMatcher("/*/*.js"),
+                                antMatcher("/profile/*")
+                        ).permitAll()
                         .requestMatchers(
-                                "/swagger-resources",
-                                "/swagger-resources/**",
-                                "/configuration/ui",
-                                "/configuration/security",
-                                "/swagger-ui.html",
-                                "/webjars/**",
-                                "/v3/api-docs/**",
-                                "/api/public/**",
-                                "/api/public/authenticate",
-                                "/actuator/*",
-                                "/swagger-ui/**",
-                                "/druid/*"
-                                ).anonymous()
+                                antMatcher("/swagger-resources"),
+                                antMatcher("/swagger-resources/**"),
+                                antMatcher("/configuration/ui"),
+                                antMatcher("/configuration/security"),
+                                antMatcher("/swagger-ui.html"),
+                                antMatcher("/webjars/**"),
+                                antMatcher("/v3/api-docs/**"),
+                                antMatcher("/api/public/**"),
+                                antMatcher("/api/public/authenticate"),
+                                antMatcher("/actuator/*"),
+                                antMatcher("/swagger-ui/**"),
+                                antMatcher("/reciveMsgFromWx"),
+                                antMatcher("/druid/**"),
+                                antMatcher("/druid/**")
+                        ).permitAll()
                         .anyRequest().authenticated()
 
                 )
