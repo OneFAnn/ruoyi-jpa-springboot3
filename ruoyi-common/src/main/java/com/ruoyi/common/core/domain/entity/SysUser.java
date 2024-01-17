@@ -3,6 +3,7 @@ package com.ruoyi.common.core.domain.entity;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -214,7 +215,7 @@ public class SysUser extends BaseEntity
     {
         this.avatar = avatar;
     }
-
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String getPassword()
     {
         return password;
