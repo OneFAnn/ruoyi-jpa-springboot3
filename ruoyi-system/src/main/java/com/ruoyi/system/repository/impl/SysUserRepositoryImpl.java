@@ -58,7 +58,7 @@ public class SysUserRepositoryImpl extends BaseRepositoryImpl<SysUser,Long> impl
 
     @Override
     public List<SysUser> selectAllocatedList(SysUser user,PageDomain pageDomain) {
-        BlazeJPAQuery<SysUser> jpaQuery = blazeJPAQueryFactory.selectDistinct(u).from(u)
+        BlazeJPAQuery<SysUser> jpaQuery = blazeJPAQueryFactory.select(u).from(u)
                 .leftJoin(d).on(u.deptId.eq(d.deptId))
                 .leftJoin(ur).on(u.userId.eq(ur.userId))
                 .leftJoin(r).on(r.roleId.eq(ur.roleId))
@@ -69,7 +69,7 @@ public class SysUserRepositoryImpl extends BaseRepositoryImpl<SysUser,Long> impl
                                 .notEmptyLike(user.getPhonenumber(), u.phonenumber)
                                 .notEmptyExpressions(user.getParams())
                                 .build()
-                ).orderBy(u.userId.asc());
+                ).groupBy(u.userId).orderBy(u.userId.asc());
         return this.fetchPage(jpaQuery,pageDomain).orElseGet(jpaQuery::fetch);
 
     }
