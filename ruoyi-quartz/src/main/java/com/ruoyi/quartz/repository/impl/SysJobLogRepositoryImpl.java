@@ -32,7 +32,7 @@ public class SysJobLogRepositoryImpl extends BaseRepositoryImpl<SysJobLog,Long> 
                                 .notEmptyEq(jobLog.getStatus(), jl.status)
                                 .notEmptyLike(jobLog.getInvokeTarget(), jl.invokeTarget)
                                 .notEmptyDateAfter((String) jobLog.getParams().get("beginTime"), jl.createTime)
-                                .notEmptyDateBefter((String) jobLog.getParams().get("endTime"), jl.createTime, () -> LocalTime.of(23, 59, 59))
+                                .notEmptyDateBefore((String) jobLog.getParams().get("endTime"), jl.createTime, () -> LocalTime.of(23, 59, 59))
                                 .build()
                 ).orderBy(jl.jobLogId.desc());
         return this.fetchPage(jpaQuery,pageDomain).orElseGet(jpaQuery::fetch);

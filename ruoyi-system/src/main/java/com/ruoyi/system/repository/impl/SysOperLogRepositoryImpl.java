@@ -34,9 +34,10 @@ public class SysOperLogRepositoryImpl extends BaseRepositoryImpl<SysOperLog,Long
                         .notEmptyEq(operLog.getStatus(), op.status)
                         .notEmptyLike(operLog.getOperName(), op.operName)
                         .notEmptyDateAfter((String) operLog.getParams().get("beginTime"), op.createTime)
-                        .notEmptyDateBefter((String) operLog.getParams().get("endTime"), op.createTime, () -> LocalTime.of(23, 59, 59))
+                        .notEmptyDateBefore((String) operLog.getParams().get("endTime"), op.createTime)
                         .build()
-                ).orderBy(op.operId.desc());
+                );
+        pageDomain.setDefaultOrder(op.operId.desc());
         return this.fetchPage(jpaQuery,pageDomain).orElseGet(jpaQuery::fetch);
     }
 

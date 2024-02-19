@@ -57,7 +57,7 @@ public class SysRoleRepositoryImpl extends BaseRepositoryImpl<SysRole,Long> impl
                         .notEmptyEq(role.getStatus(), r.status)
                         .notEmptyEq(role.getRoleKey(), r.roleKey)
                         .notEmptyDateAfter((String) role.getParams().get("beginTime"), r.createTime)
-                        .notEmptyDateBefter((String) role.getParams().get("endTime"), r.createTime, () -> LocalTime.of(23, 59, 59))
+                        .notEmptyDateBefore((String) role.getParams().get("endTime"), r.createTime, () -> LocalTime.of(23, 59, 59))
                         .build()
         ).orderBy(r.roleId.asc());
         return  this.fetchPage(jpaQuery,pageDomain).orElseGet(jpaQuery::fetch);

@@ -37,7 +37,7 @@ public class SysDictTypeRepositoryImpl extends BaseRepositoryImpl<SysDictType,Lo
                                 .notEmptyEq(dictType.getStatus(), qSysDictType.status)
                                 .notEmptyLike(dictType.getDictType(), qSysDictType.dictType)
                                 .notEmptyDateAfter((String) dictType.getParams().get("beginTime"), qSysDictType.createTime)
-                                .notEmptyDateBefter((String) dictType.getParams().get("endTime"), qSysDictType.createTime, () -> LocalTime.of(23, 59, 59))
+                                .notEmptyDateBefore((String) dictType.getParams().get("endTime"), qSysDictType.createTime, () -> LocalTime.of(23, 59, 59))
                                 .build()
                 ).orderBy(qSysDictType.dictId.asc());
         return this.fetchPage(jpaQuery,pageDomain).orElseGet(jpaQuery::fetch);

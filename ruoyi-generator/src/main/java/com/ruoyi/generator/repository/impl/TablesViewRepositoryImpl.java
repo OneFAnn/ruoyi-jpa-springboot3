@@ -43,7 +43,7 @@ public class TablesViewRepositoryImpl extends BaseRepositoryImpl<Tables, TablesV
                         .notEmptyEq(genTable.getTableName(), tv.tableName)
                         .notEmptyEq(genTable.getTableComment(), tv.tableComment)
                         .notEmptyDateAfter((String) genTable.getParams().get("beginTime"), tv.createTime)
-                        .notEmptyDateBefter((String) genTable.getParams().get("endTime"), tv.createTime, () -> LocalTime.of(23, 59, 59))
+                        .notEmptyDateBefore((String) genTable.getParams().get("endTime"), tv.createTime, () -> LocalTime.of(23, 59, 59))
                         .build()
         ).orderBy(tv.createTime.desc(),tv.tableName.desc(),tv.tableSchema.desc());
         return this.fetchPage(jpaQuery, pageDomain).orElseGet(jpaQuery::fetch);

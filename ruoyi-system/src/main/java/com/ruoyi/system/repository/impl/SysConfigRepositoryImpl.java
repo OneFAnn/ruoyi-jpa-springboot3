@@ -51,7 +51,7 @@ public  class SysConfigRepositoryImpl extends BaseRepositoryImpl<SysConfig,Long>
                 .notEmptyLike(config.getConfigName(), qSysConfig.configName)
                 .notEmptyEq(config.getConfigType(), qSysConfig.configType)
                 .notEmptyDateAfter((String)config.getParams().get("beginTime"), qSysConfig.createTime)
-                .notEmptyDateBefter((String)config.getParams().get("endTime"), qSysConfig.createTime, () -> LocalTime.of(23, 59, 59))
+                .notEmptyDateBefore((String)config.getParams().get("endTime"), qSysConfig.createTime, () -> LocalTime.of(23, 59, 59))
                 .build()).orderBy(qSysConfig.configId.asc());
         return this.fetchPage(sysConfigJPAQuery,pageDomain).orElseGet(sysConfigJPAQuery::fetch);
 

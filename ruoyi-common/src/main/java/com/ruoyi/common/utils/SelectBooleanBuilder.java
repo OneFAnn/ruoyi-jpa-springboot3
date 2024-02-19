@@ -107,18 +107,25 @@ public  class SelectBooleanBuilder{
     public SelectBooleanBuilder notEmptyDateAfter(String param, DateTimePath<Date> path){
         if(StringUtils.hasText(param)){
             Date begin = DateUtils.parseDate(param);
-            booleanBuilder.and(path.after(begin));
+            booleanBuilder.and(path.goe(begin));
+        }
+        return this;
+    }
+
+    public SelectBooleanBuilder notEmptyDateBefore(String param, DateTimePath<Date> path){
+        if(StringUtils.hasText(param)){
+            Date end = DateUtils.parseDate(param);
+            booleanBuilder.and(path.loe(end));
         }
         return this;
     }
 
 
-
-    public SelectBooleanBuilder notEmptyDateBefter(String param, DateTimePath<Date> path, Supplier<LocalTime> supplier){
+    public SelectBooleanBuilder notEmptyDateBefore(String param, DateTimePath<Date> path, Supplier<LocalTime> supplier){
         if(StringUtils.hasText(param)){
             LocalDate end = LocalDate.parse(param);
             LocalDateTime localDateTime= end.atTime(supplier.get());
-            booleanBuilder.and(path.before(DateUtils.toDate(localDateTime)));
+            booleanBuilder.and(path.loe(DateUtils.toDate(localDateTime)));
         }
         return this;
     }

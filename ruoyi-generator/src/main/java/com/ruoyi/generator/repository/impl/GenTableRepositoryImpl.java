@@ -47,7 +47,7 @@ public class GenTableRepositoryImpl extends BaseRepositoryImpl<GenTable,Long> im
                                 .notEmptyLike(genTable.getTableName(), t.tableName)
                                 .notEmptyEq(genTable.getTableComment(), t.tableComment)
                                 .notEmptyDateAfter((String) genTable.getParams().get("beginTime"), t.createTime)
-                                .notEmptyDateBefter((String) genTable.getParams().get("endTime"), t.createTime, () -> LocalTime.of(23, 59, 59))
+                                .notEmptyDateBefore((String) genTable.getParams().get("endTime"), t.createTime, () -> LocalTime.of(23, 59, 59))
                                 .build()
                 ).orderBy(t.tableId.desc());
         return  this.fetchPage(jpaQuery,pageDomain).orElseGet(jpaQuery::fetch);

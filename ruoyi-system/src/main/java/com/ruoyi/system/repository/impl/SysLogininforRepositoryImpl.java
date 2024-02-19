@@ -36,10 +36,10 @@ public class SysLogininforRepositoryImpl extends BaseRepositoryImpl<SysLogininfo
                                 .notEmptyEq(logininfor.getStatus(), qSysLogininfor.status)
                                 .notEmptyLike(logininfor.getUserName(), qSysLogininfor.userName)
                                 .notEmptyDateAfter((String) logininfor.getParams().get("beginTime"), qSysLogininfor.createTime)
-                                .notEmptyDateBefter((String) logininfor.getParams().get("endTime"), qSysLogininfor.createTime, () -> LocalTime.of(23, 59, 59))
+                                .notEmptyDateBefore((String) logininfor.getParams().get("endTime"), qSysLogininfor.createTime)
                                 .build()
-                )
-                .orderBy(qSysLogininfor.infoId.desc());
+                );
+        pageDomain.setDefaultOrder(qSysLogininfor.infoId.desc());
         return this.fetchPage(jpaQuery,pageDomain).orElseGet(jpaQuery::fetch);
 
     }

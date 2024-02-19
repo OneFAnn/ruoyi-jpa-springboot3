@@ -31,6 +31,8 @@ public class PageDomain
     /** 分页参数合理化 */
     private Boolean reasonable = true;
 
+    private OrderSpecifier defaultOrder;
+
     public String getOrderBy()
     {
         if (StringUtils.isEmpty(orderByColumn))
@@ -73,7 +75,13 @@ public class PageDomain
         }
         return Optional.of(orderSpecifier);
     }
+    public Optional<OrderSpecifier> getDefaultOrder(){
+        return Optional.ofNullable(defaultOrder);
+    }
 
+    public void setDefaultOrder(OrderSpecifier order){
+        this.defaultOrder = order;
+    }
     public Integer getPageNum()
     {
         return pageNum;
