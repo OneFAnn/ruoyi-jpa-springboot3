@@ -49,6 +49,7 @@ public abstract class BaseRepositoryImpl<T,ID> extends SimpleJpaRepository<T,ID>
         return Optional.ofNullable(pageDomain).map(page -> {
             Optional<OrderSpecifier> dslOrderBy = pageDomain.getDslOrderBy();
             dslOrderBy.map(orderSpecifier -> jpaQuery.orderBy(orderSpecifier));
+            pageDomain.getDefaultOrder().map(defaultOrder -> jpaQuery.orderBy(defaultOrder));
             return jpaQuery.fetchPage(pageDomain.offset(), pageDomain.getPageSize());
         });
     }
