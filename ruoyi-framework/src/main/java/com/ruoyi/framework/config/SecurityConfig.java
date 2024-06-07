@@ -111,7 +111,7 @@ public class SecurityConfig
                                 antMatcher("/*/*.html"),
                                 antMatcher("/*/*.css"),
                                 antMatcher("/*/*.js"),
-                                antMatcher("/profile/*")
+                                antMatcher("/profile/**")
                         ).permitAll()
                         .requestMatchers(
                                 antMatcher("/swagger-resources"),
@@ -125,8 +125,6 @@ public class SecurityConfig
                                 antMatcher("/api/public/authenticate"),
                                 antMatcher("/actuator/*"),
                                 antMatcher("/swagger-ui/**"),
-                                antMatcher("/reciveMsgFromWx"),
-                                antMatcher("/druid/**"),
                                 antMatcher("/druid/**")
                         ).permitAll()
                         .anyRequest().authenticated()

@@ -142,9 +142,9 @@ public class SysUserRepositoryImpl extends BaseRepositoryImpl<SysUser,Long> impl
 
     @Override
     public int updateUserAvatar(String userName, String avatar) {
-        blazeJPAQueryFactory.update(u).set(u.avatar,avatar)
-                .where(u.userName.eq(userName));
-        return 1;
+        long execute = blazeJPAQueryFactory.update(u).set(u.avatar, avatar)
+                .where(u.userName.eq(userName)).execute();
+        return (int) execute;
     }
 
     @Override
