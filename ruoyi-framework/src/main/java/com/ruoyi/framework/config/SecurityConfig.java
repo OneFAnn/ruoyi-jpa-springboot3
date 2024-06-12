@@ -103,32 +103,36 @@ public class SecurityConfig
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(antMatcher("/login"), antMatcher("/register"), antMatcher("/captchaImage")).anonymous()
-                        .requestMatchers(
-                                antMatcher("/"),
-                                antMatcher("/*.html"),
-                                antMatcher("/*/*.html"),
-                                antMatcher("/*/*.css"),
-                                antMatcher("/*/*.js"),
-                                antMatcher("/profile/**")
-                        ).permitAll()
-                        .requestMatchers(
-                                antMatcher("/swagger-resources"),
-                                antMatcher("/swagger-resources/**"),
-                                antMatcher("/configuration/ui"),
-                                antMatcher("/configuration/security"),
-                                antMatcher("/swagger-ui.html"),
-                                antMatcher("/webjars/**"),
-                                antMatcher("/v3/api-docs/**"),
-                                antMatcher("/api/public/**"),
-                                antMatcher("/api/public/authenticate"),
-                                antMatcher("/actuator/*"),
-                                antMatcher("/swagger-ui/**"),
-                                antMatcher("/druid/**")
-                        ).permitAll()
-                        .anyRequest().authenticated()
-
+                .authorizeHttpRequests((authorize) -> {
+                    authorize
+                            .requestMatchers(antMatcher("/login"), antMatcher("/register"), antMatcher("/captchaImage")).anonymous()
+                            .requestMatchers(
+                                    antMatcher("/"),
+                                    antMatcher("/*.html"),
+                                    antMatcher("/*/*.html"),
+                                    antMatcher("/*/*.css"),
+                                    antMatcher("/*/*.js"),
+                                    antMatcher("/profile/**")
+                            ).permitAll()
+                            .requestMatchers(
+                                    antMatcher("/swagger-resources"),
+                                    antMatcher("/swagger-resources/**"),
+                                    antMatcher("/configuration/ui"),
+                                    antMatcher("/configuration/security"),
+                                    antMatcher("/swagger-ui.html"),
+                                    antMatcher("/webjars/**"),
+                                    antMatcher("/v3/api-docs/**"),
+                                    antMatcher("/api/public/**"),
+                                    antMatcher("/api/public/authenticate"),
+                                    antMatcher("/actuator/*"),
+                                    antMatcher("/swagger-ui/**"),
+                                    antMatcher("/druid/**")
+                            ).permitAll();
+                            permitAllUrl.getUrls().stream().forEach(url -> {
+                                authorize.requestMatchers(antMatcher(url)).permitAll();
+                            });
+                            authorize.anyRequest().authenticated();
+                        }
                 )
                 // CSRF禁用，因为不使用session
                 .csrf(csrfConfigurer -> csrfConfigurer.disable()
